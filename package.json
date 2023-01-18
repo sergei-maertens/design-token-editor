@@ -1,0 +1,33 @@
+{
+  "name": "design-token-editor",
+  "version": "1.0.0",
+  "description": "A react component to view/edit design token values",
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
+  "types": "./lib/esm/index.d.ts",
+  "scripts": {
+    "build:esm": "tsc",
+    "build:cjs": "tsc --module commonjs --outDir lib/cjs",
+    "build": "npm run build:esm && npm run build:cjs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sergei-maertens/design-token-editor.git"
+  },
+  "keywords": [
+    "react",
+    "design-tokens",
+    "style-dictionary"
+  ],
+  "author": "Sergei Maertens",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sergei-maertens/design-token-editor/issues"
+  },
+  "homepage": "https://github.com/sergei-maertens/design-token-editor#readme",
+  "devDependencies": {
+    "@open-formulieren/design-tokens": "^0.18.0",
+    "typescript": "^4.9.4"
+  }
+}
