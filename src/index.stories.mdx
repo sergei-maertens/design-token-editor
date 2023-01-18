@@ -1,14 +1,21 @@
 import { Canvas, Meta, Story, ArgsTable } from '@storybook/addon-docs';
+import ofDesignTokens from '@open-formulieren/design-tokens/dist/tokens.js';
 
 import { TokenRow } from './index';
 
 <Meta title="TokenRow" component={TokenRow} />
 
-export const Template = (args) => <TokenRow prefix={args.prefix} />;
+export const Template = ({designToken}) => (
+  <table style={{borderCollapse: 'collapse', width: '100%'}}>
+    <tbody>
+      <TokenRow designToken={designToken} />
+    </tbody>
+  </table>
+);
 
 <Canvas>
   <Story name="Default" args={{
-    prefix: 'Prefix'
+    designToken: ofDesignTokens.of['page-footer'].bg
   }}>
   {Template.bind({})}
   </Story>
