@@ -1,0 +1,28 @@
+import { Canvas, Meta, Story, ArgsTable } from '@storybook/addon-docs';
+import ofDesignTokens from '@open-formulieren/design-tokens/dist/tokens.js';
+
+import { TokensTable } from './index';
+
+<Meta title="TokensTable" component={TokensTable} />
+
+## Token row
+
+export const Template = ({container}) => (
+  <>
+    <TokensTable container={container} />
+    <br />
+    <br />
+    Original:
+    <div>
+      <pre><code>{JSON.stringify(container, null, 2)}</code></pre>
+    </div>
+  </>
+);
+
+<Canvas>
+  <Story name="Default" args={{container: ofDesignTokens}}>
+  {Template.bind({})}
+  </Story>
+</Canvas>
+
+<ArgsTable of={TokensTable} />
