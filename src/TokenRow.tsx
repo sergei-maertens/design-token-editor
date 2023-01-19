@@ -38,13 +38,13 @@ const TokenRow = ({designToken}: TokenRowProps): JSX.Element => {
   const tokenPath = path.join('.');
   return (
     <tr>
-      <td id={getTokenHtmlID(tokenPath)}>
+      <td id={getTokenHtmlID(tokenPath)} style={{padding: '.5em'}}>
         <code>{tokenPath}</code>
       </td>
-      <td>
+      <td style={{padding: '.5em'}}>
         <input name={tokenPath} type="text" placeholder={value} defaultValue="" />
       </td>
-      <td>
+      <td style={{padding: '.5em'}}>
         <code>{original.value}</code>
         <GoTo token={original.value} />
       </td>

@@ -12,11 +12,29 @@ export type DesignTokenContainer = {
 } | DesignToken;
 
 
-interface TokensTableProps {
-  container: DesignTokenContainer;
+
+interface ScopeRowProps {
+  scope: string[];
 }
 
-const TokensTableRows = ({ container }: TokensTableProps): JSX.Element => {
+
+const ScopeRow = ({ scope=[] }: ScopeRowProps): JSX.Element => {
+  return (
+    <tr>
+      <td colSpan={3} style={{border: 'solid 1px grey', padding: '.5em'}}>
+        {scope.join(' / ')}
+      </td>
+    </tr>
+  );
+};
+
+
+interface TokensTableProps {
+  container: DesignTokenContainer;
+  parentScopes?: string[];
+}
+
+const TokensTableRows = ({ container, parentScopes=[] }: TokensTableProps): JSX.Element => {
   if ('value' in container) {
     return (
       <TokenRow designToken={container as DesignToken} />
@@ -24,7 +42,15 @@ const TokensTableRows = ({ container }: TokensTableProps): JSX.Element => {
   }
 
   const nested = Object.entries(container).map(
-    ([key, child]) => <TokensTableRows key={key} container={child} />
+    ([key, child]) => {
+      const allScopes = parentScopes.concat(key);
+      return (
+        <React.Fragment key={allScopes.join('-')}>
+          { 'value' in child ? null : <ScopeRow scope={allScopes} /> }
+          <TokensTableRows container={child} parentScopes={allScopes} />
+        </React.Fragment>
+      );
+    }
   );
   return <>{nested}</>;
 };
@@ -32,7 +58,7 @@ const TokensTableRows = ({ container }: TokensTableProps): JSX.Element => {
 
 const TokensTable = ({ container }: TokensTableProps): JSX.Element => {
   return (
-    <table>
+    <table style={{borderCollapse: 'collapse'}}>
       <tbody>
         <tr>
           <th>Token</th>
