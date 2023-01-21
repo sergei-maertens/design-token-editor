@@ -16,18 +16,33 @@ export type DesignTokenContainer = {
 
 interface ScopeRowProps {
   scope: string[];
+  isOpen: boolean;
   onToggle: (scope: string[]) => void;
 }
 
 
-const ScopeRow = ({ scope=[], onToggle }: ScopeRowProps): JSX.Element => {
+const ScopeRow = ({ scope=[], isOpen, onToggle }: ScopeRowProps): JSX.Element => {
+  const stateDisplay = isOpen ? '👇' : '👉';
   return (
     <tr>
-      <td colSpan={3} style={{border: 'solid 1px grey', padding: '.5em'}}>
-        <div style={{display: 'flex', justifyContent: 'space-between'}}>
+      <td colSpan={3} style={{border: 'solid 1px grey'}}>
+        <button
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            width: '100%',
+            background: 'transparent',
+            padding: '.5em 1em .5em .5em',
+            border: 'none',
+            cursor: 'pointer',
+          }}
+          onClick={() => onToggle(scope)}
+          aria-label={isOpen ? 'Close scope' : 'Show children'}
+          title={isOpen ? 'Close scope' : 'Show children'}
+        >
           <span>{scope.join(' / ')}</span>
-          <button onClick={() => onToggle(scope)}>toggle children</button>
-        </div>
+          <span>{stateDisplay}</span>
+        </button>
       </td>
     </tr>
   );
@@ -96,7 +111,11 @@ const TokensTableRows = ({
     const isHidden = closedScopes.some(closedScope => containerPath.startsWith(closedScope.join('.')));
     return (
       <React.Fragment key={containerPath}>
-        <ScopeRow scope={containerScope} onToggle={onToggle} />
+        <ScopeRow
+          scope={containerScope}
+          onToggle={onToggle}
+          isOpen={!isHidden}
+        />
         {isHidden ? null : (
           <TokensTableRows
             container={container}
@@ -155,12 +174,17 @@ const TokensTable = ({ container, limitTo=null, autoExpand = false }: TokensTabl
   };
 
   return (
-    <table style={{borderCollapse: 'collapse', width: '100%', tableLayout: 'fixed'}}>
+    <table style={{
+      borderCollapse: 'collapse',
+      width: '100%',
+      tableLayout: 'fixed',
+      fontFamily: 'calibri, sans-serif',
+    }}>
       <tbody>
         <tr>
-          <th style={{textAlign: 'left'}}>Token</th>
-          <th style={{textAlign: 'left'}}>(Default) value</th>
-          <th style={{textAlign: 'left'}}>Value source</th>
+          <th style={{textAlign: 'left', padding: '.5em'}}>Token</th>
+          <th style={{textAlign: 'left', padding: '.5em'}}>(Default) value</th>
+          <th style={{textAlign: 'left', padding: '.5em'}}>Value source</th>
         </tr>
         <TokensTableRows
           container={container}
