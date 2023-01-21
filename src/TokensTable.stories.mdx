@@ -11,8 +11,8 @@ Displays a table with the (JSON) path of the token, the current value (which can
 edited) and where the current value is coming from (either a reference to another
 token, or a literal value).
 
-export const Template = ({container, limitTo=null}) => (
-  <TokensTable container={container} limitTo={limitTo} />
+export const Template = ({container, limitTo=null, autoExpand}) => (
+  <TokensTable container={container} limitTo={limitTo} autoExpand={autoExpand} />
 );
 
 ## Rendering all tokens of a theme
@@ -29,6 +29,7 @@ export const Template = ({container, limitTo=null}) => (
   <Story name="Limited to component" args={{
     container: ofDesignTokens,
     limitTo: ['of.button'],
+    autoExpand: true,
   }}>
   {Template.bind({})}
   </Story>

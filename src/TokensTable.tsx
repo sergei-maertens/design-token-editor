@@ -121,12 +121,13 @@ const TokensTableRows = ({
 interface TokensTableProps {
   container: DesignTokenContainer;
   limitTo?: string[] | null;
+  autoExpand?: boolean;
 }
 
 
-const TokensTable = ({ container, limitTo=null }: TokensTableProps): JSX.Element => {
+const TokensTable = ({ container, limitTo=null, autoExpand = false }: TokensTableProps): JSX.Element => {
   const namespaces = Object.keys(container).map(namespace => [namespace]);
-  const [closedScopes, setClosedScopes] = useState(namespaces);
+  const [closedScopes, setClosedScopes] = useState(autoExpand ? [] : namespaces);
 
   const onToggle = (scope: string[]) => {
     const isClosed = closedScopes.some(_scope => isEqual(_scope, scope));
