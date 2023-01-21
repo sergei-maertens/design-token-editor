@@ -11,20 +11,25 @@ Displays a table with the (JSON) path of the token, the current value (which can
 edited) and where the current value is coming from (either a reference to another
 token, or a literal value).
 
-export const Template = ({container}) => (
-  <>
-    <TokensTable container={container} />
-    <br />
-    <br />
-    Original:
-    <div>
-      <pre><code>{JSON.stringify(container, null, 2)}</code></pre>
-    </div>
-  </>
+export const Template = ({container, limitTo=null}) => (
+  <TokensTable container={container} limitTo={limitTo} />
 );
+
+## Rendering all tokens of a theme
 
 <Canvas>
   <Story name="Default" args={{container: ofDesignTokens}}>
+  {Template.bind({})}
+  </Story>
+</Canvas>
+
+## Limit rendering to a component
+
+<Canvas>
+  <Story name="Limited to component" args={{
+    container: ofDesignTokens,
+    limitTo: ['of.button'],
+  }}>
   {Template.bind({})}
   </Story>
 </Canvas>

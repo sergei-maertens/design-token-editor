@@ -34,8 +34,11 @@ const ScopeRow = ({ scope=[], onToggle }: ScopeRowProps): JSX.Element => {
 };
 
 
-interface TokensTableProps {
+type ContainerNode = [string, DesignTokenContainer];
+
+interface TokensTableRowsProps {
   container: DesignTokenContainer;
+  limitTo?: string[] | null;
   parentScopes?: string[];
   closedScopes?: string[][];
   onToggle: (scope: string[]) => void;
@@ -43,42 +46,85 @@ interface TokensTableProps {
 
 const TokensTableRows = ({
     container,
+    limitTo=null,
     parentScopes=[],
     closedScopes=[],
     onToggle,
-  }: TokensTableProps): JSX.Element | null => {
-  if ('value' in (container as DesignToken)) {
-    const isHidden = closedScopes.some(closedScope => (
-      (container as DesignToken).path.join('.').startsWith(`{closedScope.join('.')}.`)
-    ));
-    return isHidden ? null : <TokenRow designToken={container as DesignToken} />;
-  }
+  }: TokensTableRowsProps): JSX.Element | null => {
 
-  const nested = Object.entries(container).map(
-    ([key, child]) => {
-      const allScopes = parentScopes.concat(key);
-      const isHidden = allScopes.length >= 1 && closedScopes.some(closedScope => (
-        allScopes.join('.').startsWith(`${closedScope.join('.')}.`)
-      ));
-      if (isHidden) return null;
-      return (
-        <React.Fragment key={allScopes.join('-')}>
-          { 'value' in child ? null : <ScopeRow scope={allScopes} onToggle={onToggle} /> }
+  // split the items to render into two sets:
+  // 1. design tokens (leaf nodes, having a value key)
+  // 2. nested scopes/containers, having more nested scopes or leaf nodes
+  const leafNodes: DesignToken[] = [];
+  const branchNodes: ContainerNode[] = [];
+
+  Object.entries(container).forEach(([key, node]): void => {
+    // it's a leaf node if the 'value' key is present, 'DesignToken' type
+    if ('value' in node) {
+      leafNodes.push((node as DesignToken));
+    } else {
+      branchNodes.push([key, (node as DesignTokenContainer)]);
+    }
+  });
+
+  const leafNodesToRender = leafNodes.map((token: DesignToken) => {
+    const tokenPath = token.path.join('.');
+    const isHidden = closedScopes.some(closedScope => tokenPath.startsWith(closedScope.join('.')));
+    if (isHidden) return false;
+    return (<TokenRow key={tokenPath} designToken={token} />);
+  }).filter(Boolean);
+
+  const branchNodesToRender = branchNodes.map((node: ContainerNode) => {
+    const [key, container] = node;
+    const containerScope = [...parentScopes, key];
+    const containerPath = containerScope.join('.');
+
+    const isExcluded = limitTo !== null
+      ? (
+        limitTo.some( limitPath => {
+          if (containerPath.length < limitPath.length) {
+            return !limitPath.startsWith(containerPath);
+          }
+          return !containerPath.startsWith(limitPath);
+        })
+      )
+      : false
+    ;
+
+    if (isExcluded) return null;
+
+    const isHidden = closedScopes.some(closedScope => containerPath.startsWith(closedScope.join('.')));
+    return (
+      <React.Fragment key={containerPath}>
+        <ScopeRow scope={containerScope} onToggle={onToggle} />
+        {isHidden ? null : (
           <TokensTableRows
-            container={child}
-            parentScopes={allScopes}
+            container={container}
+            limitTo={limitTo}
+            parentScopes={containerScope}
             closedScopes={closedScopes}
             onToggle={onToggle}
           />
-        </React.Fragment>
-      );
-    }
+        )}
+      </React.Fragment>
+    );
+  }).filter(Boolean);
+
+  return (
+    <>
+      {leafNodesToRender}
+      {branchNodesToRender}
+    </>
   );
-  return <>{nested}</>;
 };
 
+interface TokensTableProps {
+  container: DesignTokenContainer;
+  limitTo?: string[] | null;
+}
 
-const TokensTable = ({ container }: TokensTableProps): JSX.Element => {
+
+const TokensTable = ({ container, limitTo=null }: TokensTableProps): JSX.Element => {
   const namespaces = Object.keys(container).map(namespace => [namespace]);
   const [closedScopes, setClosedScopes] = useState(namespaces);
 
@@ -94,27 +140,33 @@ const TokensTable = ({ container }: TokensTableProps): JSX.Element => {
     for (const bit of scope) {
       nestedContainer = nestedContainer[bit];
     }
-    const nestedScopes = Object.keys(nestedContainer).map(key => [...scope, key]);
+    const nestedScopes = Object
+      .entries(nestedContainer)
+      .filter(([, container]) => !('value' in container))
+      .map(([key]) => [...scope, key]);
+
     const newClosedScopes = [
       ...closedScopes.filter(_scope => !isEqual(_scope, scope)),
       ...nestedScopes,
     ];
     setClosedScopes(newClosedScopes);
     return;
-
   };
 
-  console.log(closedScopes);
-
   return (
-    <table style={{borderCollapse: 'collapse', width: '100%'}}>
+    <table style={{borderCollapse: 'collapse', width: '100%', tableLayout: 'fixed'}}>
       <tbody>
         <tr>
-          <th>Token</th>
-          <th>(Default) value</th>
-          <th>Value source</th>
+          <th style={{textAlign: 'left'}}>Token</th>
+          <th style={{textAlign: 'left'}}>(Default) value</th>
+          <th style={{textAlign: 'left'}}>Value source</th>
         </tr>
-        <TokensTableRows container={container} closedScopes={closedScopes} onToggle={onToggle} />
+        <TokensTableRows
+          container={container}
+          limitTo={limitTo}
+          closedScopes={closedScopes}
+          onToggle={onToggle}
+        />
       </tbody>
     </table>
   );
