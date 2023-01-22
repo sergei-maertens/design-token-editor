@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, {useReducer} from 'react';
 import TokensTable, {DesignTokenContainer} from './TokensTable';
-
+import TokenEditorContext from './Context';
 
 interface TokenEditorProps {
   tokens: DesignTokenContainer;
@@ -9,10 +9,48 @@ interface TokenEditorProps {
   }
 }
 
+interface TokenEditorState {
+  searchValue: string;
+  values: {
+    [key: string]: string;
+  }
+}
+
+interface ReducerAction {
+  type: 'search' | 'changeValue';
+  payload: any;
+}
+
+const initialState: TokenEditorState = {
+  searchValue: '',
+  values: {},
+};
+
+const reducer = (state: TokenEditorState, action: ReducerAction): TokenEditorState => {
+  switch (action.type) {
+    case 'search': {
+      return {...state, searchValue: action.payload}
+    }
+    case 'changeValue': {
+      const {token, value} = action.payload;
+      const {values} = state;
+      const newValues = {...values, [token]: value};
+      if (value === '') {
+        delete newValues[token];
+      }
+      return {...state, values: newValues};
+    }
+    default:
+      throw new Error()
+  }
+};
 
 const TokenEditor = ({tokens, initialValues={}}: TokenEditorProps): JSX.Element => {
-  const [values, setValues] = useState(initialValues);
-  const [searchValue, setSearchValue] = useState('');
+  const [state, dispatch] = useReducer(
+    reducer,
+    {...initialState, values: initialValues},
+  );
+
   return (
     <div style={{
       display: 'flex',
@@ -26,8 +64,8 @@ const TokenEditor = ({tokens, initialValues={}}: TokenEditorProps): JSX.Element 
           <input
             type="text"
             name="search"
-            value={searchValue}
-            onChange={ e => setSearchValue(e.target.value || '') }
+            value={state.searchValue}
+            onChange={ e => dispatch({type: 'search', payload: e.target.value}) }
             placeholder="Filter... e.g. 'of.button'"
             style={{
               padding: '.5em',
@@ -37,17 +75,22 @@ const TokenEditor = ({tokens, initialValues={}}: TokenEditorProps): JSX.Element 
           />
         </div>
 
-        <TokensTable
-          container={tokens}
-          limitTo={searchValue ? [searchValue] : null}
-          autoExpand
-        />
+        <TokenEditorContext.Provider value={{
+          onValueChange: (token, value) => dispatch({type: 'changeValue', payload: {token, value}}),
+          tokenValues: state.values,
+        }}>
+          <TokensTable
+            container={tokens}
+            limitTo={state.searchValue ? [state.searchValue] : null}
+            autoExpand
+          />
+        </TokenEditorContext.Provider>
       </div>
 
       <div style={{width: '50%'}}>
         <h2>Theme values</h2>
         <div style={{padding: '1em'}}>
-          <pre><code>{JSON.stringify(values, null, 2)}</code></pre>
+          <pre><code>{JSON.stringify(state.values, null, 2)}</code></pre>
         </div>
       </div>
 
