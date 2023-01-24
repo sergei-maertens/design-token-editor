@@ -30,8 +30,8 @@ const ColorPreview = ({token, value}: ColorPreviewProps): JSX.Element | null => 
         height: '1em',
         background: value,
         border: 'solid 1px grey',
+        borderRadius: '50%',
       }} />
-      <code>{value}</code>
     </div>
   );
 };

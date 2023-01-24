@@ -55,7 +55,7 @@ const TokenRow = ({designToken}: TokenRowProps): JSX.Element => {
         </div>
       </td>
       <td style={{padding: '.5em'}}>
-        <div style={{display: 'flex', justifyContent: 'space-between', gap: '2em'}}>
+        <div style={{display: 'flex', justifyContent: 'space-between', gap: '.5em'}}>
           {
             isColor(tokenPath, original.value) ?
               <ColorPreview token={tokenPath} value={original.value} />
