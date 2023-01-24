@@ -49,6 +49,7 @@ const TokenRow = ({designToken}: TokenRowProps): JSX.Element => {
             name={tokenPath}
             type="text"
             placeholder={value}
+            size={8}
             {...inputProps}
           />
           <ColorPreview token={tokenPath} value={currentValue} />
