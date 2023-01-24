@@ -1,3 +1,4 @@
+import set from 'lodash.set';
 import React, {useReducer} from 'react';
 import TokensTable, {DesignTokenContainer} from './TokensTable';
 import TokenEditorContext from './Context';
@@ -9,11 +10,21 @@ interface TokenEditorProps {
   }
 }
 
+type ValueMap = {
+  [key: string]: string;
+};
+
+type StyleDictValue = {
+  value: string;
+}
+
+type StyleDictValueMap = {
+  [key: string]: StyleDictValue | StyleDictValueMap;
+};
+
 interface TokenEditorState {
   searchValue: string;
-  values: {
-    [key: string]: string;
-  }
+  values: ValueMap;
 }
 
 interface ReducerAction {
@@ -43,6 +54,15 @@ const reducer = (state: TokenEditorState, action: ReducerAction): TokenEditorSta
     default:
       throw new Error()
   }
+};
+
+const toStyleDictValues = (values: ValueMap): StyleDictValueMap => {
+  let styleDictValues = {};
+  for (const [key, value] of Object.entries(values)) {
+    if (value === '') continue;
+    set(styleDictValues, key, {value: value});
+  }
+  return styleDictValues;
 };
 
 const TokenEditor = ({tokens, initialValues={}}: TokenEditorProps): JSX.Element => {
@@ -90,7 +110,7 @@ const TokenEditor = ({tokens, initialValues={}}: TokenEditorProps): JSX.Element 
       <div style={{width: '50%'}}>
         <h2>Theme values</h2>
         <div style={{padding: '1em'}}>
-          <pre><code>{JSON.stringify(state.values, null, 2)}</code></pre>
+          <pre><code>{JSON.stringify(toStyleDictValues(state.values), null, 2)}</code></pre>
         </div>
       </div>
 
