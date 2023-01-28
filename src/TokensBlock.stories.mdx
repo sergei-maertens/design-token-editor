@@ -7,11 +7,11 @@ import TokensBlock from './TokensBlock';
   title="TokensBlock"
   component={TokensBlock}
   decorators={[
-    (Story) => (
-      <div style={{ maxWidth: '600px', margin: 'auto'}}>
+    Story => (
+      <div style={{maxWidth: '600px', margin: 'auto'}}>
         <Story />
       </div>
-    )
+    ),
   ]}
   parameters={{
     docs: {
@@ -29,12 +29,12 @@ Displays a context header with the relevant tokens contained inside.
 
 export const Template = ({path, tokens}) => <TokensBlock path={path} tokens={tokens} />;
 
-export const colorTokens = Object
-    .values(ofDesignTokens.of.color)
-    .filter(potentialToken => 'value' in potentialToken);
+export const colorTokens = Object.values(ofDesignTokens.of.color).filter(
+  potentialToken => 'value' in potentialToken
+);
 
 <Canvas>
-  <Story name="Default" args={{ path: ['of', 'color'], tokens: colorTokens }}>
+  <Story name="Default" args={{path: ['of', 'color'], tokens: colorTokens}}>
     {Template.bind({})}
   </Story>
 </Canvas>
