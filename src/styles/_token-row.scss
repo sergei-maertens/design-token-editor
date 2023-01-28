@@ -4,6 +4,22 @@
   display: flex;
   justify-content: flex-start;
   gap: 1em;
+  font-family: calibri, sans-serif;
+
+  @include bem.modifier('header') {
+    border-bottom: solid 1px #ccc;
+    padding-bottom: 0.2em;
+
+    @include bem.element('token-name') {
+      font-family: inherit;
+    }
+    @include bem.element('token-value') {
+      font-family: inherit;
+    }
+    @include bem.element('token-source') {
+      font-family: inherit;
+    }
+  }
 
   @include bem.element('token-name') {
     flex-grow: 1;
