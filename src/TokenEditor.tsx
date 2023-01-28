@@ -105,7 +105,7 @@ const TokenEditor = ({tokens, initialValues = {}}: TokenEditorProps): JSX.Elemen
         >
           <TokensTable
             container={tokens}
-            limitTo={state.searchValue ? [state.searchValue] : null}
+            limitTo={state.searchValue || null}
             autoExpand
           />
         </TokenEditorContext.Provider>

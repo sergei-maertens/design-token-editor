@@ -21,10 +21,9 @@ const getTokenHtmlID = (token: string) => `dte-token-${token}`;
 
 export interface TokenRowProps {
   designToken: DesignToken;
-  noWrap?: boolean;
 }
 
-const TokenRow = ({designToken, noWrap = false}: TokenRowProps): JSX.Element => {
+const TokenRow = ({designToken}: TokenRowProps): JSX.Element => {
   const context = useContext(TokenEditorContext) as TokenEditorContextType;
 
   const {value, original, path} = designToken;
@@ -47,7 +46,7 @@ const TokenRow = ({designToken, noWrap = false}: TokenRowProps): JSX.Element => 
             context.onValueChange(tokenPath, e.target.value),
         };
 
-  const tokenRow = (
+  return (
     <div className="dte-token-row" id={getTokenHtmlID(tokenPath)}>
       <div className="dte-token-row__token-name">{tokenPath}</div>
 
@@ -73,14 +72,6 @@ const TokenRow = ({designToken, noWrap = false}: TokenRowProps): JSX.Element => 
         )}
       </div>
     </div>
-  );
-
-  return noWrap ? (
-    tokenRow
-  ) : (
-    <tr>
-      <td colSpan={3}>{tokenRow}</td>
-    </tr>
   );
 };
 

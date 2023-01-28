@@ -14,9 +14,13 @@
     border-bottom: solid 2px #ccc;
     background: hsl(0, 0%, 98%);
     box-shadow: 2px 2px 3px 0px rgba(222, 79, 232, 0.1);
-    padding: 0.3em 0.5em;
+    padding: 0.5em 1em;
     position: sticky;
     top: 0;
+
+    @include bem.modifier('with-click-handler') {
+      cursor: pointer;
+    }
   }
 
   @include bem.element('tokens') {

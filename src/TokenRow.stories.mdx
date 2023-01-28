@@ -7,13 +7,7 @@ import TokenRow from './TokenRow';
 
 ## Token row
 
-export const Template = ({designToken}) => (
-  <table style={{borderCollapse: 'collapse', width: '100%'}}>
-    <tbody>
-      <TokenRow designToken={designToken} />
-    </tbody>
-  </table>
-);
+export const Template = ({designToken}) => <TokenRow designToken={designToken} />;
 
 <Canvas>
   <Story
