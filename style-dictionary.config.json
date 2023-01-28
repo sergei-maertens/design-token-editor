@@ -1,0 +1,62 @@
+{
+  "source": [
+    "./src/**/tokens.json",
+    "./src/**/*.tokens.json"
+  ],
+  "platforms": {
+    "css": {
+      "transforms": ["attribute/cti", "name/cti/kebab", "color/hsl-4"],
+      "buildPath": "lib/css/",
+      "files": [
+        {
+          "destination": "root.css",
+          "format": "css/variables",
+          "options": {
+            "outputReferences": true
+          }
+        }
+      ]
+    },
+    "css-theme": {
+      "transforms": ["attribute/cti", "name/cti/kebab", "color/hsl-4"],
+      "buildPath": "lib/css/",
+      "files": [
+        {
+          "destination": "index.css",
+          "format": "css/variables",
+          "options": {
+            "selector": ".dte-default-theme",
+            "outputReferences": true
+          }
+        }
+      ]
+    },
+    "scss": {
+      "transforms": ["attribute/cti", "name/cti/kebab", "color/hsl-4"],
+      "buildPath": "lib/scss/",
+      "files": [
+        {
+          "destination": "_variables.scss",
+          "format": "scss/variables",
+          "options": {
+            "outputReferences": true
+          }
+        }
+      ]
+    },
+    "js": {
+      "transforms": ["attribute/cti", "name/cti/camel", "color/hsl-4"],
+      "buildPath": "lib/tokens/",
+      "files": [
+        {
+          "destination": "index.js",
+          "format": "javascript/es6"
+        },
+        {
+          "destination": "tokens.js",
+          "format": "javascript/module"
+        }
+      ]
+    }
+  }
+}
