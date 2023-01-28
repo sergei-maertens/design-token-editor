@@ -1,0 +1,11 @@
+@use 'bem';
+
+.dte-color-preview {
+  display: block;
+  width: var(--dte-color-preview-size, 1em);
+  height: var(--dte-color-preview-size, 1em);
+  background: var(--dte-color-preview-color);
+  border: solid 1px var(--dte-color-preview-border-color, hsl(0, 0%, 50%));
+  border-radius: 50%;
+  text-indent: -9999pt;
+}

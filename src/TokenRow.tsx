@@ -38,7 +38,8 @@ const TokenRow = ({designToken}: TokenRowProps): JSX.Element => {
         };
 
   const currentValue = context?.tokenValues?.[tokenPath] || value;
-  const originalValueIsColor = isColor(tokenPath, original.value);
+  const currentValueIsColor = isColor(currentValue);
+  const originalValueIsColor = isColor(original.value);
 
   return (
     <tr>
@@ -55,7 +56,7 @@ const TokenRow = ({designToken}: TokenRowProps): JSX.Element => {
               size={8}
               {...inputProps}
             />
-            <ColorPreview token={tokenPath} value={currentValue} />
+            {currentValueIsColor && <ColorPreview color={currentValue} />}
           </div>
 
           <div
@@ -64,7 +65,7 @@ const TokenRow = ({designToken}: TokenRowProps): JSX.Element => {
             })}
           >
             {originalValueIsColor ? (
-              <ColorPreview token={tokenPath} value={original.value} />
+              <ColorPreview color={original.value} />
             ) : (
               original.value
             )}
