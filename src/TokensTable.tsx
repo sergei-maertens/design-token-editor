@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import isEqual from 'lodash.isequal';
 
+import TokensBlock from './TokensBlock';
 import TokenRow from './TokenRow';
 import {DesignToken} from './TokenRow';
 
@@ -80,15 +81,24 @@ const TokensTableRows = ({
   });
 
   const leafNodesToRender = leafNodes
-    .map((token: DesignToken) => {
+    .filter((token: DesignToken) => {
       const tokenPath = token.path.join('.');
       const isHidden = closedScopes.some(closedScope =>
         tokenPath.startsWith(closedScope.join('.'))
       );
-      if (isHidden) return false;
-      return <TokenRow key={tokenPath} designToken={token} />;
+      return !isHidden;
     })
     .filter(Boolean);
+  const tokensBlock = leafNodesToRender.length ? (
+    <tr>
+      <td colSpan={3}>
+        <TokensBlock
+          path={leafNodesToRender[0].path.slice(0, -1)}
+          tokens={leafNodesToRender}
+        />
+      </td>
+    </tr>
+  ) : null;
 
   const branchNodesToRender = branchNodes
     .map((node: ContainerNode) => {
@@ -129,7 +139,7 @@ const TokensTableRows = ({
 
   return (
     <>
-      {leafNodesToRender}
+      {tokensBlock}
       {branchNodesToRender}
     </>
   );
