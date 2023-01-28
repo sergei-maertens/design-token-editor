@@ -1,0 +1,68 @@
+name: Build and publish storybook
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+  workflow_dispatch:
+
+# Allow one concurrent deployment
+concurrency:
+  group: 'pages-${{ github.ref_name }}' # unique builds for branch/tag name
+  cancel-in-progress: true
+
+jobs:
+  storybook:
+    name: Create storybook build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build storybook
+        run: |
+          npm run build:design-tokens
+          npm run build:sass
+          npm run build-storybook
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: ./storybook-static
+
+  deploy:
+    needs:
+      - storybook
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push' # Exclude PRs
+    steps:
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v1
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
