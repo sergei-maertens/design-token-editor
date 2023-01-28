@@ -51,7 +51,7 @@ const TokenRow = ({designToken, noWrap = false}: TokenRowProps): JSX.Element => 
     <div className="dte-token-row" id={getTokenHtmlID(tokenPath)}>
       <div className="dte-token-row__token-name">{tokenPath}</div>
 
-      <div className="dte-token-row__token-value dte-token-value">
+      <div className="dte-token-row__token-value">
         <TokenValueInput
           name={tokenPath}
           type={currentValueIsColor ? 'color' : 'text'}
