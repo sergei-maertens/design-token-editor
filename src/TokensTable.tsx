@@ -1,18 +1,18 @@
 import React, {useState} from 'react';
 import isEqual from 'lodash.isequal';
 
-import TokenRow from "./TokenRow";
-import { DesignToken } from "./TokenRow";
+import TokenRow from './TokenRow';
+import {DesignToken} from './TokenRow';
 
 /**
  * Key-value mapping, where the value may be a design token (leaf node) or another
  * container.
  */
-export type DesignTokenContainer = {
-  [key: string]: DesignToken | DesignTokenContainer;
-} | DesignToken;
-
-
+export type DesignTokenContainer =
+  | {
+      [key: string]: DesignToken | DesignTokenContainer;
+    }
+  | DesignToken;
 
 interface ScopeRowProps {
   scope: string[];
@@ -20,8 +20,7 @@ interface ScopeRowProps {
   onToggle: (scope: string[]) => void;
 }
 
-
-const ScopeRow = ({ scope=[], isOpen, onToggle }: ScopeRowProps): JSX.Element => {
+const ScopeRow = ({scope = [], isOpen, onToggle}: ScopeRowProps): JSX.Element => {
   const stateDisplay = isOpen ? '👇' : '👉';
   return (
     <tr>
@@ -48,7 +47,6 @@ const ScopeRow = ({ scope=[], isOpen, onToggle }: ScopeRowProps): JSX.Element =>
   );
 };
 
-
 type ContainerNode = [string, DesignTokenContainer];
 
 interface TokensTableRowsProps {
@@ -60,13 +58,12 @@ interface TokensTableRowsProps {
 }
 
 const TokensTableRows = ({
-    container,
-    limitTo=null,
-    parentScopes=[],
-    closedScopes=[],
-    onToggle,
-  }: TokensTableRowsProps): JSX.Element | null => {
-
+  container,
+  limitTo = null,
+  parentScopes = [],
+  closedScopes = [],
+  onToggle,
+}: TokensTableRowsProps): JSX.Element | null => {
   // split the items to render into two sets:
   // 1. design tokens (leaf nodes, having a value key)
   // 2. nested scopes/containers, having more nested scopes or leaf nodes
@@ -76,58 +73,59 @@ const TokensTableRows = ({
   Object.entries(container).forEach(([key, node]): void => {
     // it's a leaf node if the 'value' key is present, 'DesignToken' type
     if ('value' in node) {
-      leafNodes.push((node as DesignToken));
+      leafNodes.push(node as DesignToken);
     } else {
-      branchNodes.push([key, (node as DesignTokenContainer)]);
+      branchNodes.push([key, node as DesignTokenContainer]);
     }
   });
 
-  const leafNodesToRender = leafNodes.map((token: DesignToken) => {
-    const tokenPath = token.path.join('.');
-    const isHidden = closedScopes.some(closedScope => tokenPath.startsWith(closedScope.join('.')));
-    if (isHidden) return false;
-    return (<TokenRow key={tokenPath} designToken={token} />);
-  }).filter(Boolean);
+  const leafNodesToRender = leafNodes
+    .map((token: DesignToken) => {
+      const tokenPath = token.path.join('.');
+      const isHidden = closedScopes.some(closedScope =>
+        tokenPath.startsWith(closedScope.join('.'))
+      );
+      if (isHidden) return false;
+      return <TokenRow key={tokenPath} designToken={token} />;
+    })
+    .filter(Boolean);
 
-  const branchNodesToRender = branchNodes.map((node: ContainerNode) => {
-    const [key, container] = node;
-    const containerScope = [...parentScopes, key];
-    const containerPath = containerScope.join('.');
+  const branchNodesToRender = branchNodes
+    .map((node: ContainerNode) => {
+      const [key, container] = node;
+      const containerScope = [...parentScopes, key];
+      const containerPath = containerScope.join('.');
 
-    const isExcluded = limitTo !== null
-      ? (
-        limitTo.some( limitPath => {
-          if (containerPath.length < limitPath.length) {
-            return !limitPath.startsWith(containerPath);
-          }
-          return !containerPath.startsWith(limitPath);
-        })
-      )
-      : false
-    ;
+      const isExcluded =
+        limitTo !== null
+          ? limitTo.some(limitPath => {
+              if (containerPath.length < limitPath.length) {
+                return !limitPath.startsWith(containerPath);
+              }
+              return !containerPath.startsWith(limitPath);
+            })
+          : false;
+      if (isExcluded) return null;
 
-    if (isExcluded) return null;
-
-    const isHidden = closedScopes.some(closedScope => containerPath.startsWith(closedScope.join('.')));
-    return (
-      <React.Fragment key={containerPath}>
-        <ScopeRow
-          scope={containerScope}
-          onToggle={onToggle}
-          isOpen={!isHidden}
-        />
-        {isHidden ? null : (
-          <TokensTableRows
-            container={container}
-            limitTo={limitTo}
-            parentScopes={containerScope}
-            closedScopes={closedScopes}
-            onToggle={onToggle}
-          />
-        )}
-      </React.Fragment>
-    );
-  }).filter(Boolean);
+      const isHidden = closedScopes.some(closedScope =>
+        containerPath.startsWith(closedScope.join('.'))
+      );
+      return (
+        <React.Fragment key={containerPath}>
+          <ScopeRow scope={containerScope} onToggle={onToggle} isOpen={!isHidden} />
+          {isHidden ? null : (
+            <TokensTableRows
+              container={container}
+              limitTo={limitTo}
+              parentScopes={containerScope}
+              closedScopes={closedScopes}
+              onToggle={onToggle}
+            />
+          )}
+        </React.Fragment>
+      );
+    })
+    .filter(Boolean);
 
   return (
     <>
@@ -143,8 +141,11 @@ interface TokensTableProps {
   autoExpand?: boolean;
 }
 
-
-const TokensTable = ({ container, limitTo=null, autoExpand = false }: TokensTableProps): JSX.Element => {
+const TokensTable = ({
+  container,
+  limitTo = null,
+  autoExpand = false,
+}: TokensTableProps): JSX.Element => {
   const namespaces = Object.keys(container).map(namespace => [namespace]);
   const [closedScopes, setClosedScopes] = useState(autoExpand ? [] : namespaces);
 
@@ -160,8 +161,7 @@ const TokensTable = ({ container, limitTo=null, autoExpand = false }: TokensTabl
     for (const bit of scope) {
       nestedContainer = nestedContainer[bit];
     }
-    const nestedScopes = Object
-      .entries(nestedContainer)
+    const nestedScopes = Object.entries(nestedContainer)
       .filter(([, container]) => !('value' in container))
       .map(([key]) => [...scope, key]);
 
@@ -174,12 +174,14 @@ const TokensTable = ({ container, limitTo=null, autoExpand = false }: TokensTabl
   };
 
   return (
-    <table style={{
-      borderCollapse: 'collapse',
-      width: '100%',
-      tableLayout: 'fixed',
-      fontFamily: 'calibri, sans-serif',
-    }}>
+    <table
+      style={{
+        borderCollapse: 'collapse',
+        width: '100%',
+        tableLayout: 'fixed',
+        fontFamily: 'calibri, sans-serif',
+      }}
+    >
       <tbody>
         <tr>
           <th style={{textAlign: 'left', padding: '.5em'}}>Token</th>

@@ -7,7 +7,7 @@ interface TokenEditorProps {
   tokens: DesignTokenContainer;
   initialValues?: {
     [key: string]: string;
-  }
+  };
 }
 
 type ValueMap = {
@@ -16,7 +16,7 @@ type ValueMap = {
 
 type StyleDictValue = {
   value: string;
-}
+};
 
 type StyleDictValueMap = {
   [key: string]: StyleDictValue | StyleDictValueMap;
@@ -40,7 +40,7 @@ const initialState: TokenEditorState = {
 const reducer = (state: TokenEditorState, action: ReducerAction): TokenEditorState => {
   switch (action.type) {
     case 'search': {
-      return {...state, searchValue: action.payload}
+      return {...state, searchValue: action.payload};
     }
     case 'changeValue': {
       const {token, value} = action.payload;
@@ -52,7 +52,7 @@ const reducer = (state: TokenEditorState, action: ReducerAction): TokenEditorSta
       return {...state, values: newValues};
     }
     default:
-      throw new Error()
+      throw new Error();
   }
 };
 
@@ -65,19 +65,20 @@ const toStyleDictValues = (values: ValueMap): StyleDictValueMap => {
   return styleDictValues;
 };
 
-const TokenEditor = ({tokens, initialValues={}}: TokenEditorProps): JSX.Element => {
-  const [state, dispatch] = useReducer(
-    reducer,
-    {...initialState, values: initialValues},
-  );
+const TokenEditor = ({tokens, initialValues = {}}: TokenEditorProps): JSX.Element => {
+  const [state, dispatch] = useReducer(reducer, {
+    ...initialState,
+    values: initialValues,
+  });
 
   return (
-    <div style={{
-      display: 'flex',
-      gap: '2em',
-      fontFamily: 'calibri, sans-serif',
-    }}>
-
+    <div
+      style={{
+        display: 'flex',
+        gap: '2em',
+        fontFamily: 'calibri, sans-serif',
+      }}
+    >
       <div style={{width: '50%'}}>
         <h2>Available tokens</h2>
         <div>
@@ -85,7 +86,7 @@ const TokenEditor = ({tokens, initialValues={}}: TokenEditorProps): JSX.Element 
             type="text"
             name="search"
             value={state.searchValue}
-            onChange={ e => dispatch({type: 'search', payload: e.target.value}) }
+            onChange={e => dispatch({type: 'search', payload: e.target.value})}
             placeholder="Filter... e.g. 'of.button'"
             style={{
               padding: '.5em',
@@ -95,10 +96,13 @@ const TokenEditor = ({tokens, initialValues={}}: TokenEditorProps): JSX.Element 
           />
         </div>
 
-        <TokenEditorContext.Provider value={{
-          onValueChange: (token, value) => dispatch({type: 'changeValue', payload: {token, value}}),
-          tokenValues: state.values,
-        }}>
+        <TokenEditorContext.Provider
+          value={{
+            onValueChange: (token, value) =>
+              dispatch({type: 'changeValue', payload: {token, value}}),
+            tokenValues: state.values,
+          }}
+        >
           <TokensTable
             container={tokens}
             limitTo={state.searchValue ? [state.searchValue] : null}
@@ -110,13 +114,13 @@ const TokenEditor = ({tokens, initialValues={}}: TokenEditorProps): JSX.Element 
       <div style={{width: '50%'}}>
         <h2>Theme values</h2>
         <div style={{padding: '1em'}}>
-          <pre><code>{JSON.stringify(toStyleDictValues(state.values), null, 2)}</code></pre>
+          <pre>
+            <code>{JSON.stringify(toStyleDictValues(state.values), null, 2)}</code>
+          </pre>
         </div>
       </div>
-
     </div>
   );
 };
-
 
 export default TokenEditor;

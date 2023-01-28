@@ -1,4 +1,4 @@
-import { Canvas, Meta, Story, ArgsTable } from '@storybook/addon-docs';
+import {Canvas, Meta, Story, ArgsTable} from '@storybook/addon-docs';
 import ofDesignTokens from '@open-formulieren/design-tokens/dist/tokens.js';
 
 import TokenEditor from './TokenEditor';
@@ -7,8 +7,8 @@ import TokenEditor from './TokenEditor';
 
 ## Token editor
 
-Given a style-dictionary tokens output (resolved state of all token files),
-show an editor to inspect and modify values of design tokens.
+Given a style-dictionary tokens output (resolved state of all token files), show an
+editor to inspect and modify values of design tokens.
 
 The underlying components can be used to document components in your own storybook
 instance or even expose controls for theme builders.
@@ -18,13 +18,16 @@ export const Template = ({tokens, initialValues}) => (
 );
 
 <Canvas>
-  <Story name="Default" args={{
-    tokens: ofDesignTokens,
-    initialValues: {
-      'of.button.primary.bg': '#0177b2'
-    },
-  }}>
-  {Template.bind({})}
+  <Story
+    name="Default"
+    args={{
+      tokens: ofDesignTokens,
+      initialValues: {
+        'of.button.primary.bg': '#0177b2',
+      },
+    }}
+  >
+    {Template.bind({})}
   </Story>
 </Canvas>
 

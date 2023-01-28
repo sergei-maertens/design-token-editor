@@ -18,23 +18,26 @@ export const isColor = (token: string, value: string): boolean => {
 const ColorPreview = ({token, value}: ColorPreviewProps): JSX.Element | null => {
   if (!isColor(token, value)) return null;
   return (
-    <div style={{
-      display: 'flex',
-      gap: '.5em',
-      alignItems: 'center',
-      flexGrow: '1',
-    }}>
-      <div style={{
-        display: 'block',
-        width: '1em',
-        height: '1em',
-        background: value,
-        border: 'solid 1px grey',
-        borderRadius: '50%',
-      }} />
+    <div
+      style={{
+        display: 'flex',
+        gap: '.5em',
+        alignItems: 'center',
+        flexGrow: '1',
+      }}
+    >
+      <div
+        style={{
+          display: 'block',
+          width: '1em',
+          height: '1em',
+          background: value,
+          border: 'solid 1px grey',
+          borderRadius: '50%',
+        }}
+      />
     </div>
   );
 };
-
 
 export default ColorPreview;
