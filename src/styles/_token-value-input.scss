@@ -1,0 +1,11 @@
+@use 'bem';
+
+.dte-token-value-input {
+  font-family: monospace;
+  padding: 0.2em 0.4em;
+  text-align: center;
+
+  &[type='color'] {
+    padding: 0;
+  }
+}

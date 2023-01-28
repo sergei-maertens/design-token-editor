@@ -5,10 +5,4 @@
   gap: 1em;
   justify-content: flex-start;
   align-items: center;
-
-  @include bem.element('input') {
-    font-family: monospace;
-    padding: 0.2em 0.4em;
-    text-align: center;
-  }
 }

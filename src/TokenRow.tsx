@@ -3,6 +3,7 @@ import clsx from 'clsx';
 
 import TokenEditorContext, {TokenEditorContextType} from './Context';
 import ColorPreview, {isColor} from './ColorPreview';
+import TokenValueInput from './TokenValueInput';
 
 export type DesignToken = {
   name: string;
@@ -28,18 +29,22 @@ const TokenRow = ({designToken}: TokenRowProps): JSX.Element => {
   const {value, original, path} = designToken;
   const tokenPath = path.join('.');
 
-  const inputProps =
-    context === null
-      ? {defaultValue: '', readOnly: true}
-      : {
-          value: context.tokenValues[tokenPath] || '',
-          onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-            context.onValueChange(tokenPath, e.target.value),
-        };
-
   const currentValue = context?.tokenValues?.[tokenPath] || value;
   const currentValueIsColor = isColor(currentValue);
   const originalValueIsColor = isColor(original.value);
+
+  const inputProps =
+    context === null
+      ? {
+          defaultValue: currentValueIsColor ? currentValue : '',
+          readOnly: true,
+        }
+      : {
+          value:
+            context.tokenValues[tokenPath] || currentValueIsColor ? currentValue : '',
+          onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+            context.onValueChange(tokenPath, e.target.value),
+        };
 
   return (
     <tr>
@@ -48,12 +53,10 @@ const TokenRow = ({designToken}: TokenRowProps): JSX.Element => {
           <div className="dte-token-row__token-name">{tokenPath}</div>
 
           <div className="dte-token-row__token-value dte-token-value">
-            <input
-              className="dte-token-value__input"
+            <TokenValueInput
               name={tokenPath}
-              type="text"
-              placeholder={value}
-              size={8}
+              type={currentValueIsColor ? 'color' : 'text'}
+              defaultTokenValue={value}
               {...inputProps}
             />
             {currentValueIsColor && <ColorPreview color={currentValue} />}
