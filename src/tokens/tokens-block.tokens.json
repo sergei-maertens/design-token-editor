@@ -1,0 +1,12 @@
+{
+  "dte": {
+    "tokens-block": {
+      "gap": {"value": "0.5em"},
+      "context-row": {
+        "color": {"value": "rgb(222, 79, 232)"},
+        "font-family": {"value": "{dte.typography.code.font-family}"},
+        "font-size": {"value": "120%"}
+      }
+    }
+  }
+}

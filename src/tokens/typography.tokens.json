@@ -1,0 +1,12 @@
+{
+  "dte": {
+    "typography": {
+      "body": {
+        "font-family": {"value": "calibri, sans-serif"}
+      },
+      "code": {
+        "font-family": {"value": "monospace"}
+      }
+    }
+  }
+}

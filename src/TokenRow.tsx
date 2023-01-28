@@ -1,5 +1,6 @@
 import React, {useContext} from 'react';
 import clsx from 'clsx';
+import Color from 'color';
 
 import TokenEditorContext, {TokenEditorContextType} from './Context';
 import ColorPreview, {isColor} from './ColorPreview';
@@ -32,16 +33,17 @@ const TokenRow = ({designToken}: TokenRowProps): JSX.Element => {
   const currentValue = context?.tokenValues?.[tokenPath] || value;
   const currentValueIsColor = isColor(currentValue);
   const originalValueIsColor = isColor(original.value);
+  const currentColor = currentValueIsColor ? Color(currentValue).hex() : '';
 
   const inputProps =
     context === null
       ? {
-          defaultValue: currentValueIsColor ? currentValue : '',
+          defaultValue: currentValueIsColor ? currentColor : '',
           readOnly: true,
         }
       : {
           value:
-            context.tokenValues[tokenPath] || currentValueIsColor ? currentValue : '',
+            context.tokenValues[tokenPath] || currentValueIsColor ? currentColor : '',
           onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
             context.onValueChange(tokenPath, e.target.value),
         };

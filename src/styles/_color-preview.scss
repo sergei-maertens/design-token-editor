@@ -3,14 +3,14 @@
 .dte-color-preview {
   box-sizing: border-box;
   display: block;
-  width: var(--dte-color-preview-size, 16px);
-  height: var(--dte-color-preview-size, 16px);
-  flex-basis: var(--dte-color-preview-size, 16px);
+  width: var(--dte-color-preview-size);
+  height: var(--dte-color-preview-size);
+  flex-basis: var(--dte-color-preview-size);
   flex-grow: 0;
   flex-shrink: 0;
 
   background: var(--dte-color-preview-color);
-  border: solid 1px var(--dte-color-preview-border-color, hsl(0, 0%, 50%));
-  border-radius: 50%;
+  border: solid 1px var(--dte-color-preview-border-color);
+  border-radius: var(--dte-color-preview-border-radius);
   text-indent: -9999pt;
 }

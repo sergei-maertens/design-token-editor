@@ -1,0 +1,9 @@
+{
+  "dte": {
+    "color-preview": {
+      "size": {"value": "16px"},
+      "border-color": {"value": "hsl(0, 0%, 50%)"},
+      "border-radius": {"value": "50%"}
+    }
+  }
+}
