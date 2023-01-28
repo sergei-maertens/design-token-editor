@@ -1,4 +1,5 @@
 import React, {useContext} from 'react';
+import clsx from 'clsx';
 
 import TokenEditorContext, {TokenEditorContextType} from './Context';
 import ColorPreview, {isColor} from './ColorPreview';
@@ -37,31 +38,37 @@ const TokenRow = ({designToken}: TokenRowProps): JSX.Element => {
         };
 
   const currentValue = context?.tokenValues?.[tokenPath] || value;
+  const originalValueIsColor = isColor(tokenPath, original.value);
 
   return (
     <tr>
-      <td id={getTokenHtmlID(tokenPath)} style={{padding: '.5em'}}>
-        <code>{tokenPath}</code>
-      </td>
-      <td style={{padding: '.5em'}}>
-        <div style={{display: 'flex', justifyContent: 'space-between', gap: '2em'}}>
-          <input
-            name={tokenPath}
-            type="text"
-            placeholder={value}
-            size={8}
-            {...inputProps}
-          />
-          <ColorPreview token={tokenPath} value={currentValue} />
-        </div>
-      </td>
-      <td style={{padding: '.5em'}}>
-        <div style={{display: 'flex', justifyContent: 'space-between', gap: '.5em'}}>
-          {isColor(tokenPath, original.value) ? (
-            <ColorPreview token={tokenPath} value={original.value} />
-          ) : (
-            <code style={{flexGrow: '1'}}>{original.value}</code>
-          )}
+      <td colSpan={3}>
+        <div className="dte-token-row" id={getTokenHtmlID(tokenPath)}>
+          <div className="dte-token-row__token-name">{tokenPath}</div>
+
+          <div className="dte-token-row__token-value dte-token-value">
+            <input
+              className="dte-token-value__input"
+              name={tokenPath}
+              type="text"
+              placeholder={value}
+              size={8}
+              {...inputProps}
+            />
+            <ColorPreview token={tokenPath} value={currentValue} />
+          </div>
+
+          <div
+            className={clsx('dte-token-row__token-source', {
+              'dte-token-row__token-source--color': originalValueIsColor,
+            })}
+          >
+            {originalValueIsColor ? (
+              <ColorPreview token={tokenPath} value={original.value} />
+            ) : (
+              original.value
+            )}
+          </div>
         </div>
       </td>
     </tr>

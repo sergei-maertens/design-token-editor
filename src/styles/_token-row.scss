@@ -1,0 +1,30 @@
+@use 'bem';
+
+.dte-token-row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1em;
+
+  @include bem.element('token-name') {
+    flex-grow: 1;
+    width: 33%;
+    font-family: monospace;
+    font-weight: normal;
+  }
+
+  @include bem.element('token-value') {
+    flex-grow: 1;
+    width: 33%;
+  }
+
+  @include bem.element('token-source') {
+    flex-grow: 1;
+    width: 33%;
+    font-family: monospace;
+
+    @include bem.modifier('color') {
+      font-family: inherit;
+    }
+  }
+}
