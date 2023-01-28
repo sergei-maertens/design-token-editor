@@ -1,10 +1,10 @@
 import set from 'lodash.set';
 import React, {useReducer} from 'react';
-import TokensTable, {DesignTokenContainer} from './TokensTable';
+import TokensTable, {TopLevelContainer} from './TokensTable';
 import TokenEditorContext from './Context';
 
 interface TokenEditorProps {
-  tokens: DesignTokenContainer;
+  tokens: TopLevelContainer;
   initialValues?: {
     [key: string]: string;
   };
@@ -103,11 +103,7 @@ const TokenEditor = ({tokens, initialValues = {}}: TokenEditorProps): JSX.Elemen
             tokenValues: state.values,
           }}
         >
-          <TokensTable
-            container={tokens}
-            limitTo={state.searchValue || null}
-            autoExpand
-          />
+          <TokensTable container={tokens} limitTo={state.searchValue} autoExpand />
         </TokenEditorContext.Provider>
       </div>
 

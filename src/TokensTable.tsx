@@ -4,7 +4,7 @@ import isEqual from 'lodash.isequal';
 import TokensBlock from './TokensBlock';
 import {DesignToken} from './TokenRow';
 
-type TopLevelContainer = {
+export type TopLevelContainer = {
   [key: string]: DesignTokenContainer;
 };
 
@@ -12,7 +12,7 @@ type TopLevelContainer = {
  * Key-value mapping, where the value may be a design token (leaf node) or another
  * container.
  */
-export type DesignTokenContainer = DesignToken | {[key: string]: DesignTokenContainer};
+type DesignTokenContainer = DesignToken | {[key: string]: DesignTokenContainer};
 
 type ContainerNode = [string, DesignTokenContainer];
 
@@ -30,7 +30,7 @@ const TokensTableRows = ({
   limitTo = '',
   closedScopes = [],
   onToggle,
-}: TokensTableRowsProps): JSX.Element | null => {
+}: TokensTableRowsProps): JSX.Element => {
   // split the items to render into two sets:
   // 1. design tokens (leaf nodes, having a value key)
   // 2. nested scopes/containers, having more nested scopes or leaf nodes
@@ -104,7 +104,7 @@ const TokensTable = ({
   container,
   limitTo = '',
   autoExpand = false,
-}: TokensTableProps): JSX.Element[] => {
+}: TokensTableProps): JSX.Element => {
   const namespaces = Object.keys(container).map(namespace => [namespace]);
   const [closedScopes, setClosedScopes] = useState(autoExpand ? [] : namespaces);
 
@@ -116,7 +116,7 @@ const TokensTable = ({
     }
 
     // remove the scope from the list, but include all the child scopes
-    let nestedContainer = container;
+    let nestedContainer = container as DesignTokenContainer;
     for (const bit of scope) {
       nestedContainer = nestedContainer[bit];
     }
@@ -132,7 +132,7 @@ const TokensTable = ({
     return;
   };
 
-  return Object.entries(container)
+  const children = Object.entries(container)
     .filter(([key]) => {
       if (!limitTo) return true;
       if (key.length < limitTo.length) {
@@ -150,6 +150,8 @@ const TokensTable = ({
         onToggle={onToggle}
       />
     ));
+
+  return <>{children}</>;
 };
 
 export default TokensTable;

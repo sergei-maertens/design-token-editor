@@ -38,7 +38,7 @@ const TokensBlockTokenList = ({tokens}: TokensBlockTokenListProps): JSX.Element 
         <div className="dte-token-row__token-source">Source / default</div>
       </div>
       {tokens.map(token => (
-        <TokenRow key={token.path.join('.')} designToken={token} noWrap />
+        <TokenRow key={token.path.join('.')} designToken={token} />
       ))}
     </div>
   );
