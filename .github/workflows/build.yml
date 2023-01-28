@@ -76,8 +76,10 @@ jobs:
       - name: Download build artifact
         uses: actions/download-artifact@v3
         with:
-          name: sdk-build
-          path: dist/
+          name: package-lib
+          path: lib/
 
       - name: Publish package to NPM
-        run: echo 'DUMMY STEP FOR NOW'
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

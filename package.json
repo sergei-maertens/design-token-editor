@@ -20,6 +20,10 @@
     "format": "prettier --write 'src/**/*'",
     "checkformat": "prettier --check 'src/**/*'"
   },
+  "files": [
+    "lib/",
+    "src/styles"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sergei-maertens/design-token-editor.git"
