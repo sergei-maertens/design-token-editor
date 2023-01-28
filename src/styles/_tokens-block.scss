@@ -1,0 +1,28 @@
+@use 'bem';
+
+.dte-tokens-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+
+  @include bem.element('context-row') {
+    font-weight: bolder;
+    font-family: monospace;
+    font-size: 120%;
+    color: rgba(222, 79, 232);
+
+    border-bottom: solid 2px #ccc;
+    background: hsl(0, 0%, 98%);
+    box-shadow: 2px 2px 3px 0px rgba(222, 79, 232, 0.1);
+    padding: 0.3em 0.5em;
+    position: sticky;
+    top: 0;
+  }
+
+  @include bem.element('tokens') {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    padding-left: 1em;
+  }
+}

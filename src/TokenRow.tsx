@@ -21,9 +21,10 @@ const getTokenHtmlID = (token: string) => `dte-token-${token}`;
 
 export interface TokenRowProps {
   designToken: DesignToken;
+  noWrap?: boolean;
 }
 
-const TokenRow = ({designToken}: TokenRowProps): JSX.Element => {
+const TokenRow = ({designToken, noWrap = false}: TokenRowProps): JSX.Element => {
   const context = useContext(TokenEditorContext) as TokenEditorContextType;
 
   const {value, original, path} = designToken;
@@ -46,35 +47,39 @@ const TokenRow = ({designToken}: TokenRowProps): JSX.Element => {
             context.onValueChange(tokenPath, e.target.value),
         };
 
-  return (
+  const tokenRow = (
+    <div className="dte-token-row" id={getTokenHtmlID(tokenPath)}>
+      <div className="dte-token-row__token-name">{tokenPath}</div>
+
+      <div className="dte-token-row__token-value dte-token-value">
+        <TokenValueInput
+          name={tokenPath}
+          type={currentValueIsColor ? 'color' : 'text'}
+          defaultTokenValue={value}
+          {...inputProps}
+        />
+        {currentValueIsColor && <ColorPreview color={currentValue} />}
+      </div>
+
+      <div
+        className={clsx('dte-token-row__token-source', {
+          'dte-token-row__token-source--color': originalValueIsColor,
+        })}
+      >
+        {originalValueIsColor ? (
+          <ColorPreview color={original.value} />
+        ) : (
+          original.value
+        )}
+      </div>
+    </div>
+  );
+
+  return noWrap ? (
+    tokenRow
+  ) : (
     <tr>
-      <td colSpan={3}>
-        <div className="dte-token-row" id={getTokenHtmlID(tokenPath)}>
-          <div className="dte-token-row__token-name">{tokenPath}</div>
-
-          <div className="dte-token-row__token-value dte-token-value">
-            <TokenValueInput
-              name={tokenPath}
-              type={currentValueIsColor ? 'color' : 'text'}
-              defaultTokenValue={value}
-              {...inputProps}
-            />
-            {currentValueIsColor && <ColorPreview color={currentValue} />}
-          </div>
-
-          <div
-            className={clsx('dte-token-row__token-source', {
-              'dte-token-row__token-source--color': originalValueIsColor,
-            })}
-          >
-            {originalValueIsColor ? (
-              <ColorPreview color={original.value} />
-            ) : (
-              original.value
-            )}
-          </div>
-        </div>
-      </td>
+      <td colSpan={3}>{tokenRow}</td>
     </tr>
   );
 };

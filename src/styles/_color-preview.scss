@@ -1,9 +1,14 @@
 @use 'bem';
 
 .dte-color-preview {
+  box-sizing: border-box;
   display: block;
-  width: var(--dte-color-preview-size, 1em);
-  height: var(--dte-color-preview-size, 1em);
+  width: var(--dte-color-preview-size, 16px);
+  height: var(--dte-color-preview-size, 16px);
+  flex-basis: var(--dte-color-preview-size, 16px);
+  flex-grow: 0;
+  flex-shrink: 0;
+
   background: var(--dte-color-preview-color);
   border: solid 1px var(--dte-color-preview-border-color, hsl(0, 0%, 50%));
   border-radius: 50%;

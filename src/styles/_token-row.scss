@@ -3,25 +3,39 @@
 .dte-token-row {
   display: flex;
   justify-content: flex-start;
-  align-items: center;
   gap: 1em;
 
   @include bem.element('token-name') {
     flex-grow: 1;
-    width: 33%;
+    flex-shrink: 1;
+    overflow-x: auto;
+    width: 40%;
     font-family: monospace;
     font-weight: normal;
+
+    display: flex;
+    align-items: center;
   }
 
   @include bem.element('token-value') {
     flex-grow: 1;
-    width: 33%;
+    flex-shrink: 1;
+    overflow-x: auto;
+    width: 30%;
+
+    display: flex;
+    align-items: center;
   }
 
   @include bem.element('token-source') {
     flex-grow: 1;
-    width: 33%;
+    flex-shrink: 1;
+    overflow-x: auto;
+    width: 30%;
     font-family: monospace;
+
+    display: flex;
+    align-items: center;
 
     @include bem.modifier('color') {
       font-family: inherit;
