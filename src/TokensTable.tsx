@@ -3,16 +3,11 @@ import isEqual from 'lodash.isequal';
 
 import TokensBlock from './TokensBlock';
 import {DesignToken} from './TokenRow';
+import {DesignTokenContainer, isDesignToken, isContainer} from './util';
 
 export type TopLevelContainer = {
   [key: string]: DesignTokenContainer;
 };
-
-/**
- * Key-value mapping, where the value may be a design token (leaf node) or another
- * container.
- */
-type DesignTokenContainer = DesignToken | {[key: string]: DesignTokenContainer};
 
 type ContainerNode = [string, DesignTokenContainer];
 
@@ -38,10 +33,9 @@ const TokensTableRows = ({
   const branchNodes: ContainerNode[] = [];
 
   Object.entries(container).forEach(([key, node]): void => {
-    // it's a leaf node if the 'value' key is present, 'DesignToken' type
-    if ('value' in node) {
+    if (isDesignToken(node)) {
       leafNodes.push(node as DesignToken);
-    } else {
+    } else if (isContainer(node)) {
       branchNodes.push([key, node as DesignTokenContainer]);
     }
   });
@@ -121,7 +115,7 @@ const TokensTable = ({
       nestedContainer = nestedContainer[bit];
     }
     const nestedScopes = Object.entries(nestedContainer)
-      .filter(([, container]) => !('value' in container))
+      .filter(([, container]) => !isDesignToken(container))
       .map(([key]) => [...scope, key]);
 
     const newClosedScopes = [
