@@ -1,5 +1,7 @@
 # Design token editor
 
+[![Build package](https://github.com/sergei-maertens/design-token-editor/actions/workflows/build.yml/badge.svg)](https://github.com/sergei-maertens/design-token-editor/actions/workflows/build.yml)
+[![Build and publish storybook](https://github.com/sergei-maertens/design-token-editor/actions/workflows/storybook.yml/badge.svg)](https://github.com/sergei-maertens/design-token-editor/actions/workflows/storybook.yml)
 [![NPM package](https://img.shields.io/npm/v/design-token-editor.svg)](https://www.npmjs.com/package/design-token-editor)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat)](https://github.com/prettier/prettier)
 
@@ -10,6 +12,8 @@ This package provides React components to work with design tokens emitted by
 
 **Warning** - this package is under active development and public API may still change
 significantly.
+
+[Storybook][Storybook] documents the (public) API.
 
 ## Who is it for?
 
@@ -50,46 +54,6 @@ themes without having to bother your support staff ;)
 
 ## Usage
 
-See the [Storybook](https://sergei-maertens.github.io/design-token-editor/)
-documentation for the available components and public API.
+Please see the [Storybook][Storybook] documentation.
 
-### Including the styles
-
-The package ships with stylesheets to include for proper styling:
-
-- `design-token-editor/lib/css/dte.css` with the styles
-- `design-token-editor/lib/css/index.css` (or `root.css`) with the default theme values
-
-Note that the `index.css` has the theme values scoped under the `.dte-default-theme`
-selector, while the `root.css` uses the `root:` selector. Using the former is
-recommended, but it requires you to apply the `dte-default-theme` class name to your
-container element.
-
-You are of course free to create your own theme, in which case you should specify the
-appropriate selector to use.
-
-### Rendering a table of available tokens
-
-For example in storybook MDX format:
-
-```jsx
-import {TokensTable} from 'design-token-editor';
-import myTokens from 'my-design-tokens/dist/tokens';
-
-<div className="dte-default-theme">
-  <TokensTable container={myTokens} autoExpand />;
-</div>;
-```
-
-### Providing the editor
-
-**Warning** - the editor is WIP
-
-```jsx
-import {TokenEditor} from 'design-token-editor';
-import myTokens from 'my-design-tokens/dist/tokens';
-
-<div className="dte-default-theme">
-  <TokenEditor tokens={myTokens} initialValues={{'my.tokens.foo': 'bar'}} />;
-</div>;
-```
+[Storybook]: https://sergei-maertens.github.io/design-token-editor/

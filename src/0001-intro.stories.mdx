@@ -5,10 +5,93 @@ import TokensTable from './TokensTable';
 
 <Meta title="Introduction" />
 
+[![Build package](https://github.com/sergei-maertens/design-token-editor/actions/workflows/build.yml/badge.svg)](https://github.com/sergei-maertens/design-token-editor/actions/workflows/build.yml)
+[![Build and publish storybook](https://github.com/sergei-maertens/design-token-editor/actions/workflows/storybook.yml/badge.svg)](https://github.com/sergei-maertens/design-token-editor/actions/workflows/storybook.yml)
+[![NPM package](https://img.shields.io/npm/v/design-token-editor.svg)](https://www.npmjs.com/package/design-token-editor)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat)](https://github.com/prettier/prettier)
+
 # design-token-editor
 
-The design token editor is meant to provide an interface to view and edit available
-design token values from one or multiple component packages built with style-dictionary.
+Provide insight into design tokens and edit their values.
+
+This package provides React components to work with design tokens emitted by
+[Style Dictionary](https://amzn.github.io/style-dictionary/) builds.
+
+**Warning** - this package is under active development and public API may still change
+significantly.
+
+## Usage
+
+This Storybook documents the public and private API. Public API will follow SemVer once
+1.0.0 is reached, private API is "use at your own risk".
+
+### Including the styles
+
+The components in `design-token-editor` require CSS to be properly displayed, and thus
+you need to include the relevant stylesheets:
+
+- `design-token-editor/css/dte.css` main styles, using CSS variables for themeing
+- `design-token-editor/css/index.css` (or `root.css`) with the default theme values
+
+Note that the `index.css` has the theme values scoped under the `.dte-default-theme`
+selector, while the `root.css` uses the `root:` selector. Using the former is
+recommended, but it requires you to apply the `dte-default-theme` class name to your
+container element (see examples below).
+
+**Own theme**
+
+You are of course free to create your own theme, in which case you should specify the
+appropriate selector to use. Below you can find the available design tokens.
+
+**SCSS sources**
+
+Additionally, for convenience the SCSS source is packed in the `src/styles` directory,
+should you wish to include those in your own pipeline. Note that these styles are
+**not** considered stable, so use them at your own risk.
+
+### Rendering a table of available tokens
+
+For example in storybook MDX format:
+
+```jsx
+import {TokensTable} from 'design-token-editor';
+import myTokens from 'my-design-tokens/dist/tokens';
+
+<div className="dte-default-theme">
+  <TokensTable container={myTokens} autoExpand />;
+</div>;
+```
+
+### Providing the editor
+
+**Warning** - the editor is WIP
+
+```jsx
+import {TokenEditor} from 'design-token-editor';
+import myTokens from 'my-design-tokens/dist/tokens';
+
+<div className="dte-default-theme">
+  <TokenEditor tokens={myTokens} initialValues={{'my.tokens.foo': 'bar'}} />;
+</div>;
+```
+
+## ESM modules
+
+The components are built both as ESM and CJS modules.
+
+**ESM usage**
+
+```js
+import TokensTable from 'design-token-editor/esm/TokensTable';
+```
+
+**CJS usage**
+
+```js
+const {TokensTable} = require('design-token-editor');
+// or
+const {TokensTable} = require('design-token-editor/lib/cjs/TokensTable');
+```
 
 ## Editor theme
 

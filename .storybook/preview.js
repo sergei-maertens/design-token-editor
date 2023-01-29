@@ -13,4 +13,10 @@ export const parameters = {
       date: /Date$/,
     },
   },
+  options: {
+    storySort: {
+      method: 'alphabetical',
+      order: ['Introduction', 'Public API', 'Private API'],
+    },
+  },
 };
