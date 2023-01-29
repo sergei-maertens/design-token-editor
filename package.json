@@ -5,6 +5,17 @@
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
   "types": "./lib/esm/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./lib/esm/index.js",
+      "require": "./lib/cjs/index.js",
+      "default": "./lib/cjs/index.js"
+    },
+    "./esm/": "./lib/esm/",
+    "./css/": "./lib/css/",
+    "./tokens": "./lib/tokens/tokens.js",
+    "./lib/": "./lib/"
+  },
   "scripts": {
     "start": "npm-run-all -p watch:* storybook",
     "build:esm": "tsc",
