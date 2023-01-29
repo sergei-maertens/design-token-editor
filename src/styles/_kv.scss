@@ -1,0 +1,25 @@
+@use 'bem';
+
+.dte-kv {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.5em;
+  font-family: var(--dte-typography-body-font-family);
+
+  @include bem.element('key') {
+    display: var(--dte-kv-key-display, block);
+    flex-basis: var(--dte-kv-key-width, 40%);
+    flex-grow: 0;
+    flex-shrink: 0;
+    padding: 0.2em 0;
+  }
+
+  @include bem.element('value') {
+    flex-grow: 1;
+    margin: 0;
+    padding: 0.2em 0;
+  }
+}

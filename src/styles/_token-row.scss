@@ -1,62 +1,86 @@
 @use 'bem';
+@use 'responsive';
 
 .dte-token-row {
   display: flex;
+  flex-direction: var(--dte-token-row-flex-direction, column);
   justify-content: flex-start;
-  gap: 1em;
+  gap: 0.5em;
   font-family: calibri, sans-serif;
 
   @include bem.modifier('header') {
+    display: var(--dte-token-row-header-display, none);
     border-bottom: solid 1px #ccc;
     padding-bottom: 0.2em;
 
     @include bem.element('token-name') {
       font-family: inherit;
+      padding: 0;
     }
-    @include bem.element('token-value') {
+    @include bem.element('token-value-container') {
       font-family: inherit;
     }
-    @include bem.element('token-source') {
+    @include bem.element('token-source-container') {
       font-family: inherit;
     }
   }
 
   @include bem.element('token-name') {
+    padding: 0.5em 0;
     flex-grow: 1;
-    flex-shrink: 1;
-    overflow-x: auto;
-    width: 40%;
+    flex-basis: 40%;
     font-family: monospace;
-    font-weight: normal;
+    font-weight: var(--dte-token-row-token-name-font-weight, 600);
+    font-size: var(--dte-token-row-token-name-font-size, 120%);
+    border-bottom: var(--dte-token-row-token-name-border-bottom, solid 1px black);
 
     display: flex;
     align-items: center;
   }
 
-  @include bem.element('token-value') {
+  @include bem.element('token-value-container') {
     flex-grow: 1;
-    flex-shrink: 1;
-    overflow-x: auto;
-    width: 30%;
+    flex-basis: 30%;
+  }
 
+  @include bem.element('token-value') {
     display: flex;
     justify-content: flex-start;
     align-items: center;
     gap: 1em;
   }
 
-  @include bem.element('token-source') {
+  @include bem.element('token-source-container') {
     flex-grow: 1;
-    flex-shrink: 1;
-    overflow-x: auto;
-    width: 30%;
+    flex-basis: 30%;
+  }
+  @include bem.element('token-source') {
     font-family: monospace;
-
     display: flex;
     align-items: center;
 
     @include bem.modifier('color') {
       font-family: inherit;
+    }
+  }
+}
+
+@include responsive.when-container('token-block', $min-size: 400px) {
+  .dte-token-row {
+    --dte-token-row-flex-direction: row;
+
+    @include bem.modifier('header') {
+      --dte-token-row-header-display: flex;
+    }
+
+    @include bem.element('token-name') {
+      --dte-token-row-token-name-font-weight: normal;
+      --dte-token-row-token-name-font-size: normal;
+      --dte-token-row-token-name-border-bottom: none;
+    }
+
+    .dte-kv__key {
+      --dte-kv-key-display: none;
     }
   }
 }

@@ -52,26 +52,34 @@ const TokenRow = ({designToken}: TokenRowProps): JSX.Element => {
     <div className="dte-token-row" id={getTokenHtmlID(tokenPath)}>
       <div className="dte-token-row__token-name">{tokenPath}</div>
 
-      <div className="dte-token-row__token-value">
-        <TokenValueInput
-          name={tokenPath}
-          type={currentValueIsColor ? 'color' : 'text'}
-          defaultTokenValue={value}
-          {...inputProps}
-        />
-        {currentValueIsColor && <ColorPreview color={currentValue} />}
+      <div className="dte-kv dte-token-row__token-value-container">
+        <div className="dte-kv__key">Value:</div>
+        <div className="dte-kv__value dte-token-row__token-value">
+          <TokenValueInput
+            name={tokenPath}
+            type={currentValueIsColor ? 'color' : 'text'}
+            defaultTokenValue={value}
+            {...inputProps}
+          />
+          {currentValueIsColor && <ColorPreview color={currentValue} />}
+        </div>
       </div>
 
-      <div
-        className={clsx('dte-token-row__token-source', {
-          'dte-token-row__token-source--color': originalValueIsColor,
-        })}
-      >
-        {originalValueIsColor ? (
-          <ColorPreview color={original.value} />
-        ) : (
-          original.value
-        )}
+      <div className="dte-kv dte-token-row__token-source-container">
+        <div className="dte-kv__key" title="Source of (default) value">
+          Source:
+        </div>
+        <div
+          className={clsx('dte-kv__value', 'dte-token-row__token-source', {
+            'dte-token-row__token-source--color': originalValueIsColor,
+          })}
+        >
+          {originalValueIsColor ? (
+            <ColorPreview color={original.value} />
+          ) : (
+            original.value
+          )}
+        </div>
       </div>
     </div>
   );

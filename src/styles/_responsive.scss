@@ -1,0 +1,5 @@
+@mixin when-container($name, $min-size) {
+  @container #{$name} (min-width: #{$min-size}) {
+    @content;
+  }
+}
