@@ -7,17 +7,47 @@ import TokenRow from './TokenRow';
 
 ## Token row
 
-export const Template = ({designToken}) => <TokenRow designToken={designToken} />;
+export const Template = ({designToken, contained = false}) => (
+  <div className={contained ? 'dte-tokens-block' : ''}>
+    <TokenRow designToken={designToken} />
+  </div>
+);
+
+The token row adapts its layout based on the container it is in - by default it's
+displayed in 'mobile'/'narrow' view, but on wider containers the content is displayed in
+a single row.
+
+_This relies on the `@container` queries, which are fairly new - not all browsers
+support this yet!_
+
+**Default**
 
 <Canvas>
   <Story
     name="Default"
     args={{
       designToken: ofDesignTokens.of['page-footer'].bg,
+      contained: false,
     }}
   >
     {Template.bind({})}
   </Story>
 </Canvas>
+
+**Contained**
+
+<Canvas>
+  <Story
+    name="Contained"
+    args={{
+      designToken: ofDesignTokens.of['summary-row'].spacing,
+      contained: true,
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+## Props
 
 <ArgsTable of={TokenRow} />
