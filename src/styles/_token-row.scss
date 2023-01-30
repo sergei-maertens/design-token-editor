@@ -6,7 +6,7 @@
   flex-direction: var(--dte-token-row-flex-direction, column);
   justify-content: flex-start;
   gap: 0.5em;
-  font-family: calibri, sans-serif;
+  font-family: var(--of-token-row-font-family);
 
   @include bem.modifier('header') {
     display: var(--dte-token-row-header-display, none);

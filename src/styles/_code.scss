@@ -1,0 +1,15 @@
+@use 'bem';
+
+.dte-code {
+  @include bem.modifier('inline') {
+    white-space: nowrap;
+    font-family: var(--of-dtede-font-family);
+    color: var(--dte-code-color);
+    line-height: var(--of-dtede-line-height);
+    margin: var(--dte-code-margin);
+    padding: var(--dte-code-padding);
+    border: var(--dte-code-border);
+    border-radius: var(--dte-code-border-radius);
+    background-color: var(--dte-code-background-color);
+  }
+}

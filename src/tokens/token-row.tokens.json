@@ -1,0 +1,7 @@
+{
+  "of": {
+    "token-row": {
+      "font-family": {"value": "{dte.typography.body.font-family}"}
+    }
+  }
+}

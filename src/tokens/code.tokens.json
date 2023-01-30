@@ -1,0 +1,14 @@
+{
+  "dte": {
+    "code": {
+      "font-family": {"value": "{dte.typography.code.font-family}"},
+      "color": {"value": "rgba(51,51,51,0.9)"},
+      "line-height": {"value": "1"},
+      "margin": {"value": "0 2px"},
+      "padding": {"value": "3px 5px"},
+      "border": {"value": "1px solid #EEEEEE"},
+      "border-radius": {"value": "3px"},
+      "background-color": {"value": "#F8F8F8"}
+    }
+  }
+}

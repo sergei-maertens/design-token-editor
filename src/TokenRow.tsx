@@ -50,7 +50,9 @@ const TokenRow = ({designToken}: TokenRowProps): JSX.Element => {
 
   return (
     <div className="dte-token-row" id={getTokenHtmlID(tokenPath)}>
-      <div className="dte-token-row__token-name">{tokenPath}</div>
+      <div className="dte-token-row__token-name">
+        <span className="dte-code dte-code--inline">{tokenPath}</span>
+      </div>
 
       <div className="dte-kv dte-token-row__token-value-container">
         <div className="dte-kv__key">Value:</div>
@@ -77,7 +79,7 @@ const TokenRow = ({designToken}: TokenRowProps): JSX.Element => {
           {originalValueIsColor ? (
             <ColorPreview color={original.value} />
           ) : (
-            original.value
+            <span className="dte-code dte-code--inline">{original.value}</span>
           )}
         </div>
       </div>
