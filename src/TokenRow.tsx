@@ -30,13 +30,14 @@ const TokenRow = ({designToken}: TokenRowProps): JSX.Element => {
   const {value, original, path} = designToken;
   const tokenPath = path.join('.');
 
+  const editorMode = context?.mode || 'documentation';
   const currentValue = context?.tokenValues?.[tokenPath] || value;
   const currentValueIsColor = isColor(currentValue);
   const originalValueIsColor = isColor(original.value);
   const currentColor = currentValueIsColor ? Color(currentValue).hex() : '';
 
   const inputProps =
-    context === null
+    editorMode !== 'edit'
       ? {
           defaultValue: currentValueIsColor ? currentColor : '',
           readOnly: true,
@@ -57,12 +58,16 @@ const TokenRow = ({designToken}: TokenRowProps): JSX.Element => {
       <div className="dte-kv dte-token-row__token-value-container">
         <div className="dte-kv__key">Value:</div>
         <div className="dte-kv__value dte-token-row__token-value">
-          <TokenValueInput
-            name={tokenPath}
-            type={currentValueIsColor ? 'color' : 'text'}
-            defaultTokenValue={value}
-            {...inputProps}
-          />
+          {editorMode === 'documentation' ? (
+            <span className="dte-code dte-code--inline">{value}</span>
+          ) : (
+            <TokenValueInput
+              name={tokenPath}
+              type={currentValueIsColor ? 'color' : 'text'}
+              defaultTokenValue={value}
+              {...inputProps}
+            />
+          )}
           {currentValueIsColor && <ColorPreview color={currentValue} />}
         </div>
       </div>

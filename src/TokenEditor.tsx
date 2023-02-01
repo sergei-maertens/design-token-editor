@@ -98,6 +98,7 @@ const TokenEditor = ({tokens, initialValues = {}}: TokenEditorProps): JSX.Elemen
 
         <TokenEditorContext.Provider
           value={{
+            mode: 'edit',
             onValueChange: (token, value) =>
               dispatch({type: 'changeValue', payload: {token, value}}),
             tokenValues: state.values,
