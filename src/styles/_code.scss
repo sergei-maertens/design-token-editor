@@ -2,7 +2,6 @@
 
 .dte-code {
   @include bem.modifier('inline') {
-    white-space: nowrap;
     font-family: var(--of-dtede-font-family);
     color: var(--dte-code-color);
     line-height: var(--of-dtede-line-height);
