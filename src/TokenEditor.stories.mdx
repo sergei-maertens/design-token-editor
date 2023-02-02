@@ -23,7 +23,13 @@ export const Template = ({tokens, initialValues}) => (
     args={{
       tokens: ofDesignTokens,
       initialValues: {
-        'of.button.primary.bg': '#0177b2',
+        of: {
+          button: {
+            primary: {
+              bg: {value: '#0177b2'},
+            },
+          },
+        },
       },
     }}
   >

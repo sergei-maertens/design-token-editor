@@ -2,14 +2,14 @@ import set from 'lodash.set';
 import React, {useReducer} from 'react';
 
 import TokenEditorContext from './Context';
+import {DesignToken} from './TokenRow';
 import TokensTable from './TokensTable';
 import {TopLevelContainer} from './types';
+import {isDesignToken} from './util';
 
 interface TokenEditorProps {
   tokens: TopLevelContainer;
-  initialValues?: {
-    [key: string]: string;
-  };
+  initialValues?: TopLevelContainer;
 }
 
 type ValueMap = {
@@ -67,10 +67,25 @@ const toStyleDictValues = (values: ValueMap): StyleDictValueMap => {
   return styleDictValues;
 };
 
+const fromStyleDictValues = (values: TopLevelContainer): ValueMap => {
+  const flatMap = {};
+  Object.entries(values).forEach(([k, v]) => {
+    if (isDesignToken(v)) {
+      flatMap[k] = (v as DesignToken).value;
+    } else {
+      const nested = fromStyleDictValues(v);
+      Object.entries(nested).forEach(([nk, nv]) => {
+        flatMap[`${k}.${nk}`] = nv;
+      });
+    }
+  });
+  return flatMap;
+};
+
 const TokenEditor = ({tokens, initialValues = {}}: TokenEditorProps): JSX.Element => {
   const [state, dispatch] = useReducer(reducer, {
     ...initialState,
-    values: initialValues,
+    values: fromStyleDictValues(initialValues),
   });
 
   return (

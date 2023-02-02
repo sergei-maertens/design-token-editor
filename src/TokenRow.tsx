@@ -27,6 +27,8 @@ export interface TokenRowProps {
 const TokenRow = ({designToken}: TokenRowProps): JSX.Element => {
   const context = useContext(TokenEditorContext) as TokenEditorContextType;
 
+  console.log(context.tokenValues);
+
   const {value, original, path} = designToken;
   const tokenPath = path.join('.');
 
