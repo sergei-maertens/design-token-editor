@@ -27,8 +27,6 @@ export interface TokenRowProps {
 const TokenRow = ({designToken}: TokenRowProps): JSX.Element => {
   const context = useContext(TokenEditorContext) as TokenEditorContextType;
 
-  console.log(context.tokenValues);
-
   const {value, original, path} = designToken;
   const tokenPath = path.join('.');
 
@@ -46,7 +44,7 @@ const TokenRow = ({designToken}: TokenRowProps): JSX.Element => {
         }
       : {
           value:
-            context.tokenValues[tokenPath] || currentValueIsColor ? currentColor : '',
+            context.tokenValues[tokenPath] || (currentValueIsColor ? currentColor : ''),
           onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
             context.onValueChange(tokenPath, e.target.value),
         };
