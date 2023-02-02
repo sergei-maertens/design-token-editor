@@ -2,12 +2,8 @@ import React, {useState} from 'react';
 import isEqual from 'lodash.isequal';
 
 import TokensBlock from './TokensBlock';
-import {DesignToken} from './TokenRow';
-import {DesignTokenContainer, isDesignToken, isContainer} from './util';
-
-export type TopLevelContainer = {
-  [key: string]: DesignTokenContainer;
-};
+import {isDesignToken, isContainer} from './util';
+import {DesignTokenContainer, DesignToken, TopLevelContainer} from './types';
 
 type ContainerNode = [string, DesignTokenContainer];
 

@@ -1,10 +1,4 @@
-import {DesignToken} from './TokenRow';
-
-/**
- * Key-value mapping, where the value may be a design token (leaf node) or another
- * container.
- */
-export type DesignTokenContainer = DesignToken | {[key: string]: DesignTokenContainer};
+import {DesignTokenContainer} from './types';
 
 export const isDesignToken = (node: DesignTokenContainer) => {
   return typeof node === 'object' && 'value' in node;

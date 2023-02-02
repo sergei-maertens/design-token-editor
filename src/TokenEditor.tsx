@@ -1,7 +1,9 @@
 import set from 'lodash.set';
 import React, {useReducer} from 'react';
-import TokensTable, {TopLevelContainer} from './TokensTable';
+
 import TokenEditorContext from './Context';
+import TokensTable from './TokensTable';
+import {TopLevelContainer} from './types';
 
 interface TokenEditorProps {
   tokens: TopLevelContainer;
