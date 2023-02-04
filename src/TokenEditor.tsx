@@ -1,5 +1,6 @@
 import set from 'lodash.set';
 import React, {useReducer} from 'react';
+import clsx from 'clsx';
 
 import TokenEditorContext from './Context';
 import TokenFilter from './TokenFilter';
@@ -23,16 +24,18 @@ type StyleDictValueMap = {
 interface TokenEditorState {
   searchValue: string;
   values: ValueMap;
+  valuesState: 'collapsed' | 'expanded';
 }
 
 interface ReducerAction {
-  type: 'search' | 'changeValue';
-  payload: any;
+  type: 'search' | 'changeValue' | 'toggleValuesState';
+  payload?: any;
 }
 
 const initialState: TokenEditorState = {
   searchValue: '',
   values: {},
+  valuesState: 'collapsed',
 };
 
 const reducer = (state: TokenEditorState, action: ReducerAction): TokenEditorState => {
@@ -48,6 +51,10 @@ const reducer = (state: TokenEditorState, action: ReducerAction): TokenEditorSta
         delete newValues[token];
       }
       return {...state, values: newValues};
+    }
+    case 'toggleValuesState': {
+      const nextState = state.valuesState === 'expanded' ? 'collapsed' : 'expanded';
+      return {...state, valuesState: nextState};
     }
     default:
       throw new Error();
@@ -108,8 +115,18 @@ const TokenEditor = ({tokens, initialValues = {}}: TokenEditorProps): JSX.Elemen
           <TokensTable container={tokens} limitTo={state.searchValue} autoExpand />
         </TokenEditorContext.Provider>
       </div>
-      <div className="dte-editor__values">
-        <h2 className="dte-editor__section-title">Values</h2>
+      <div
+        className={clsx(
+          'dte-editor__values',
+          state.valuesState && `dte-editor__values--${state.valuesState}`
+        )}
+      >
+        <header className="dte-editor__values-meta">
+          <h2 className="dte-editor__section-title">Values</h2>
+          <button type="button" onClick={() => dispatch({type: 'toggleValuesState'})}>
+            {state.valuesState === 'expanded' ? 'Collapse' : 'Expand'}
+          </button>
+        </header>
         <code className="dte-code dte-code--block">
           {JSON.stringify(toStyleDictValues(state.values), null, 2)}
         </code>
