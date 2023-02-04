@@ -2,15 +2,11 @@ import set from 'lodash.set';
 import React, {useReducer} from 'react';
 
 import TokenEditorContext from './Context';
+import TokenFilter from './TokenFilter';
 import {DesignToken} from './TokenRow';
 import TokensTable from './TokensTable';
 import {TopLevelContainer} from './types';
 import {isDesignToken} from './util';
-
-interface TokenEditorProps {
-  tokens: TopLevelContainer;
-  initialValues?: TopLevelContainer;
-}
 
 type ValueMap = {
   [key: string]: string;
@@ -82,6 +78,11 @@ const fromStyleDictValues = (values: TopLevelContainer): ValueMap => {
   return flatMap;
 };
 
+interface TokenEditorProps {
+  tokens: TopLevelContainer;
+  initialValues?: TopLevelContainer;
+}
+
 const TokenEditor = ({tokens, initialValues = {}}: TokenEditorProps): JSX.Element => {
   const [state, dispatch] = useReducer(reducer, {
     ...initialState,
@@ -89,30 +90,13 @@ const TokenEditor = ({tokens, initialValues = {}}: TokenEditorProps): JSX.Elemen
   });
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        gap: '2em',
-        fontFamily: 'calibri, sans-serif',
-      }}
-    >
-      <div style={{width: '50%'}}>
-        <h2>Available tokens</h2>
-        <div>
-          <input
-            type="text"
-            name="search"
-            value={state.searchValue}
-            onChange={e => dispatch({type: 'search', payload: e.target.value})}
-            placeholder="Filter... e.g. 'of.button'"
-            style={{
-              padding: '.5em',
-              width: 'calc(100% - 1em)',
-              marginBottom: '1em',
-            }}
-          />
-        </div>
-
+    <div className="dte-editor">
+      <div className="dte-editor__tokens">
+        <h2 className="dte-editor__section-title">Tokens</h2>
+        <TokenFilter
+          text={state.searchValue}
+          onChange={e => dispatch({type: 'search', payload: e.target.value})}
+        />
         <TokenEditorContext.Provider
           value={{
             mode: 'edit',
@@ -124,14 +108,11 @@ const TokenEditor = ({tokens, initialValues = {}}: TokenEditorProps): JSX.Elemen
           <TokensTable container={tokens} limitTo={state.searchValue} autoExpand />
         </TokenEditorContext.Provider>
       </div>
-
-      <div style={{width: '50%'}}>
-        <h2>Theme values</h2>
-        <div style={{padding: '1em'}}>
-          <pre>
-            <code>{JSON.stringify(toStyleDictValues(state.values), null, 2)}</code>
-          </pre>
-        </div>
+      <div className="dte-editor__values">
+        <h2 className="dte-editor__section-title">Values</h2>
+        <code className="dte-code dte-code--block">
+          {JSON.stringify(toStyleDictValues(state.values), null, 2)}
+        </code>
       </div>
     </div>
   );

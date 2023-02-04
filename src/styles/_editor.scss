@@ -1,0 +1,19 @@
+@use 'bem';
+
+.dte-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  font-family: var(--dte-editor-font-family);
+
+  @include bem.element('section-title') {
+    margin: var(--dte-editor-section-title-margin);
+
+    &:not(:last-child) {
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  @include bem.element('values') {
+  }
+}

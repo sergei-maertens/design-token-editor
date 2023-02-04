@@ -1,0 +1,10 @@
+{
+  "dte": {
+    "editor": {
+      "font-family": {"value": "{dte.typography.body.font-family}"},
+      "section-title": {
+        "margin": {"value": "0"}
+      }
+    }
+  }
+}

@@ -8,7 +8,7 @@
   container-name: token-block;
 
   &:not(:last-child) {
-    margin-bottom: 0.5em;
+    margin-bottom: 0.5rem;
   }
 
   @include bem.element('context-row') {

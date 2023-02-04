@@ -1,14 +1,23 @@
 @use 'bem';
 
 .dte-code {
+  font-family: var(--dte-code-font-family);
+  color: var(--dte-code-color);
+
   @include bem.modifier('inline') {
-    font-family: var(--dte-code-font-family);
-    color: var(--dte-code-color);
     line-height: var(--dte-code-line-height);
     margin: var(--dte-code-margin);
     padding: var(--dte-code-padding);
     border: var(--dte-code-border);
     border-radius: var(--dte-code-border-radius);
     background-color: var(--dte-code-background-color);
+  }
+
+  @include bem.modifier('block') {
+    display: block;
+    white-space: pre;
+    background-color: var(--dte-code-background-color);
+    border-radius: var(--dte-code-border-radius);
+    padding: var(--dte-code-block-padding, var(--dte-code-padding));
   }
 }

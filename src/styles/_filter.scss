@@ -1,0 +1,11 @@
+@use 'bem';
+
+.dte-token-filter {
+  display: block;
+  padding: 0.5em;
+  width: 100%;
+
+  &:not(&:last-child) {
+    margin-bottom: 0.5rem;
+  }
+}
