@@ -15,5 +15,21 @@
   }
 
   @include bem.element('values') {
+    box-sizing: border-box;
+    position: var(--dte-editor-values-position);
+    bottom: 0;
+    background: var(--dte-editor-values-background);
+    border-top: solid xpx #ddd;
+    padding: 0.5rem;
+    box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.2);
+
+    @include bem.modifier('collapsed') {
+      max-height: 10vh;
+    }
+
+    @include bem.modifier('expanded') {
+      height: auto;
+      max-height: 90vh;
+    }
   }
 }
