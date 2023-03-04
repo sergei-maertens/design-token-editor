@@ -43,6 +43,24 @@
     flex-basis: 30%;
   }
 
+  @include bem.element('edit-icon') {
+    padding: 0.2rem 0.5rem;
+    background: transparent;
+    border: var(--dte-token-row-edit-icon-border, solid 1px #aaa);
+    border-radius: var(--dte-token-row-edit-icon-border-radius, 4px);
+    box-shadow: var(
+      --dte-token-row-edit-icon-box-shadow,
+      1px 1px 2px 0px rgba(0, 0, 0, 0.2)
+    );
+
+    &:hover {
+      box-shadow: var(
+        --dte-token-row-edit-icon-hover-box-shadow,
+        1px 1px 3px 1px rgba(0, 0, 0, 0.3)
+      );
+    }
+  }
+
   @include bem.element('token-value') {
     display: flex;
     justify-content: flex-start;

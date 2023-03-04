@@ -5,7 +5,6 @@ export type TokenEditorContextType = {
   tokenValues: {
     [key: string]: string;
   };
-  mode: 'documentation' | 'edit';
 };
 
 const TokenEditorContext = React.createContext<TokenEditorContextType | null>(null);

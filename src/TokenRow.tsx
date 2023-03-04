@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import clsx from 'clsx';
 import Color from 'color';
 
@@ -18,6 +18,14 @@ export type DesignToken = {
   };
 };
 
+type EditorMode = 'edit' | 'documentation';
+type InputProps = {
+  defaultValue?: string;
+  readOnly?: boolean;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
+
 const getTokenHtmlID = (token: string) => `dte-token-${token}`;
 
 export interface TokenRowProps {
@@ -25,29 +33,38 @@ export interface TokenRowProps {
 }
 
 const TokenRow = ({designToken}: TokenRowProps): JSX.Element => {
-  const context = useContext(TokenEditorContext) as TokenEditorContextType;
+  const context = useContext<TokenEditorContextType | null>(TokenEditorContext);
+  const [editorMode, setEditorMode] = useState<EditorMode>('documentation');
 
   const {value, original, path} = designToken;
   const tokenPath = path.join('.');
 
-  const editorMode = context?.mode || 'documentation';
   const currentValue = context?.tokenValues?.[tokenPath] || value;
   const currentValueIsColor = isColor(currentValue);
   const originalValueIsColor = isColor(original.value);
   const currentColor = currentValueIsColor ? Color(currentValue).hex() : '';
 
-  const inputProps =
-    editorMode !== 'edit'
-      ? {
-          defaultValue: currentValueIsColor ? currentColor : '',
-          readOnly: true,
-        }
-      : {
-          value:
-            context.tokenValues[tokenPath] || (currentValueIsColor ? currentColor : ''),
-          onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-            context.onValueChange(tokenPath, e.target.value),
-        };
+  let inputProps: InputProps;
+  switch (editorMode) {
+    case 'documentation': {
+      inputProps = {
+        defaultValue: currentValueIsColor ? currentColor : '',
+        readOnly: true,
+      };
+      break;
+    }
+    case 'edit': {
+      inputProps = {
+        value:
+          context?.tokenValues[tokenPath] || (currentValueIsColor ? currentColor : ''),
+      };
+      if (context) {
+        inputProps.onChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+          context.onValueChange(tokenPath, e.target.value);
+      }
+      break;
+    }
+  }
 
   return (
     <div className="dte-token-row" id={getTokenHtmlID(tokenPath)}>
@@ -58,6 +75,20 @@ const TokenRow = ({designToken}: TokenRowProps): JSX.Element => {
       <div className="dte-kv dte-token-row__token-value-container">
         <div className="dte-kv__key">Value:</div>
         <div className="dte-kv__value dte-token-row__token-value">
+          {context ? (
+            <button
+              className="dte-token-row__edit-icon"
+              type="button"
+              onClick={() =>
+                setEditorMode(editorMode === 'documentation' ? 'edit' : 'documentation')
+              }
+              title="Edit"
+              aria-label="Edit"
+            >
+              {' '}
+              ✏️{' '}
+            </button>
+          ) : null}
           {editorMode === 'documentation' ? (
             <span className="dte-code dte-code--inline">{value}</span>
           ) : (
