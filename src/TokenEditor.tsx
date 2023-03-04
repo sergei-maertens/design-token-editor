@@ -1,5 +1,5 @@
 import set from 'lodash.set';
-import React, {useReducer} from 'react';
+import React, {useEffect, useReducer} from 'react';
 import clsx from 'clsx';
 
 import TokenEditorContext from './Context';
@@ -161,13 +161,26 @@ const ViewModePicker = ({
 interface TokenEditorProps {
   tokens: TopLevelContainer;
   initialValues?: TopLevelContainer;
+  onChange?: (values: StyleDictValueMap) => void;
 }
 
-const TokenEditor = ({tokens, initialValues = {}}: TokenEditorProps): JSX.Element => {
+const TokenEditor = ({
+  tokens,
+  initialValues = {},
+  onChange,
+}: TokenEditorProps): JSX.Element => {
   const [state, dispatch] = useReducer(reducer, {
     ...initialState,
     values: fromStyleDictValues(initialValues),
   });
+
+  const styleDictValues = toStyleDictValues(state.values);
+
+  // call the onChange if tokens value has changed.
+  useEffect(() => {
+    if (!onChange) return;
+    onChange(styleDictValues);
+  }, [state.values]);
 
   let body: JSX.Element;
   switch (state.viewMode) {
@@ -180,8 +193,9 @@ const TokenEditor = ({tokens, initialValues = {}}: TokenEditorProps): JSX.Elemen
           />
           <TokenEditorContext.Provider
             value={{
-              onValueChange: (token, value) =>
-                dispatch({type: 'changeValue', payload: {token, value}}),
+              onValueChange: (token, value) => {
+                dispatch({type: 'changeValue', payload: {token, value}});
+              },
               tokenValues: state.values,
             }}
           >
@@ -193,11 +207,9 @@ const TokenEditor = ({tokens, initialValues = {}}: TokenEditorProps): JSX.Elemen
     }
     case 'values': {
       body = (
-        <>
-          <code className="dte-code dte-code--block">
-            {JSON.stringify(toStyleDictValues(state.values), null, 2)}
-          </code>
-        </>
+        <code className="dte-code dte-code--block">
+          {JSON.stringify(styleDictValues, null, 2)}
+        </code>
       );
       break;
     }

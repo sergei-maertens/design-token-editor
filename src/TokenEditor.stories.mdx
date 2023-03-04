@@ -1,3 +1,4 @@
+import {useState} from 'react';
 import {Canvas, Meta, Story, ArgsTable} from '@storybook/addon-docs';
 import ofDesignTokens from '@open-formulieren/design-tokens/dist/tokens.js';
 
@@ -12,6 +13,9 @@ editor to inspect and modify values of design tokens.
 
 The underlying components can be used to document components in your own storybook
 instance or even expose controls for theme builders.
+
+When changes are made in the editor, the new style-dictionary tree of the tokens
+is provided to the `onChange` callback prop.
 
 export const Template = ({tokens, initialValues}) => (
   <TokenEditor tokens={tokens} initialValues={initialValues} />
@@ -38,3 +42,43 @@ export const Template = ({tokens, initialValues}) => (
 </Canvas>
 
 <ArgsTable of={TokenEditor} />
+
+## With a callback function to capture edits
+
+export const CallbackTemplate = ({tokens, initialValues}) => {
+  const [changeCounter, setChangeCounter] = useState(0);
+  const [values, setValues] = useState(initialValues);
+  const onChange = (newValues) => {
+    setValues(newValues);
+    setChangeCounter(changeCounter + 1);
+  }
+  return (
+    <>
+      <div style={{padding: '1em', marginBottom: '1em', background: '#eee'}}>
+        <div>Changes received: {changeCounter}</div>
+        <code><pre>{JSON.stringify(values, null, 2)}</pre></code>
+      </div>
+      <TokenEditor tokens={tokens} initialValues={initialValues} onChange={onChange} />
+    </>
+  );
+}
+
+<Canvas>
+  <Story
+    name="onChange callback"
+    args={{
+      tokens: ofDesignTokens,
+      initialValues: {
+        of: {
+          button: {
+            primary: {
+              bg: {value: '#0177b2'},
+            },
+          },
+        },
+      },
+    }}
+  >
+    {CallbackTemplate.bind({})}
+  </Story>
+</Canvas>
