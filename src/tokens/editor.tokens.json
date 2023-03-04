@@ -4,10 +4,6 @@
       "font-family": {"value": "{dte.typography.body.font-family}"},
       "section-title": {
         "margin": {"value": "0"}
-      },
-      "values": {
-        "position": {"value": "sticky"},
-        "background": {"value": "#ffffff"}
       }
     }
   }

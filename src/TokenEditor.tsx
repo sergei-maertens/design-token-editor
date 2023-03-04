@@ -21,25 +21,45 @@ type StyleDictValueMap = {
   [key: string]: StyleDictValue | StyleDictValueMap;
 };
 
+type ViewMode = 'tokens' | 'values';
+
 interface TokenEditorState {
+  viewMode: ViewMode;
   searchValue: string;
   values: ValueMap;
-  valuesState: 'collapsed' | 'expanded';
 }
 
-interface ReducerAction {
-  type: 'search' | 'changeValue' | 'toggleValuesState';
-  payload?: any;
-}
+type SetViewModeAction = {
+  type: 'setViewMode';
+  payload: ViewMode;
+};
+
+type SearchAction = {
+  type: 'search';
+  payload: string;
+};
+
+type ChangeValueAction = {
+  type: 'changeValue';
+  payload: {
+    token: string;
+    value: string;
+  };
+};
+
+type ReducerAction = SetViewModeAction | SearchAction | ChangeValueAction;
 
 const initialState: TokenEditorState = {
+  viewMode: 'tokens',
   searchValue: '',
   values: {},
-  valuesState: 'collapsed',
 };
 
 const reducer = (state: TokenEditorState, action: ReducerAction): TokenEditorState => {
   switch (action.type) {
+    case 'setViewMode': {
+      return {...state, viewMode: action.payload};
+    }
     case 'search': {
       return {...state, searchValue: action.payload};
     }
@@ -51,10 +71,6 @@ const reducer = (state: TokenEditorState, action: ReducerAction): TokenEditorSta
         delete newValues[token];
       }
       return {...state, values: newValues};
-    }
-    case 'toggleValuesState': {
-      const nextState = state.valuesState === 'expanded' ? 'collapsed' : 'expanded';
-      return {...state, valuesState: nextState};
     }
     default:
       throw new Error();
@@ -85,6 +101,63 @@ const fromStyleDictValues = (values: TopLevelContainer): ValueMap => {
   return flatMap;
 };
 
+type ViewModeItemProps = {
+  viewMode: ViewMode;
+  currentViewMode: ViewMode;
+  label: string;
+  onChangeViewMode: (vm: ViewMode) => void;
+};
+
+const ViewModeItem = ({
+  viewMode,
+  label,
+  currentViewMode,
+  onChangeViewMode,
+}: ViewModeItemProps): JSX.Element => (
+  <a
+    href="#"
+    className={clsx('dte-sub-nav__item', {
+      'dte-sub-nav__item--active': viewMode === currentViewMode,
+    })}
+    onClick={(e: React.MouseEvent) => {
+      e.preventDefault();
+      onChangeViewMode(viewMode);
+    }}
+  >
+    {label}
+  </a>
+);
+
+interface ViewModePickerProps {
+  viewMode: ViewMode;
+  onChangeViewMode: (vm: ViewMode) => void;
+}
+
+const ViewModePicker = ({
+  viewMode,
+  onChangeViewMode,
+}: ViewModePickerProps): JSX.Element => {
+  return (
+    <div className="dte-view-mode-selector">
+      View
+      <nav className="dte-sub-nav">
+        <ViewModeItem
+          viewMode="tokens"
+          label="Tokens"
+          currentViewMode={viewMode}
+          onChangeViewMode={onChangeViewMode}
+        />
+        <ViewModeItem
+          viewMode="values"
+          label="Values"
+          currentViewMode={viewMode}
+          onChangeViewMode={onChangeViewMode}
+        />
+      </nav>
+    </div>
+  );
+};
+
 interface TokenEditorProps {
   tokens: TopLevelContainer;
   initialValues?: TopLevelContainer;
@@ -96,40 +169,49 @@ const TokenEditor = ({tokens, initialValues = {}}: TokenEditorProps): JSX.Elemen
     values: fromStyleDictValues(initialValues),
   });
 
+  let body: JSX.Element;
+  switch (state.viewMode) {
+    case 'tokens': {
+      body = (
+        <>
+          <TokenFilter
+            text={state.searchValue}
+            onChange={e => dispatch({type: 'search', payload: e.target.value})}
+          />
+          <TokenEditorContext.Provider
+            value={{
+              onValueChange: (token, value) =>
+                dispatch({type: 'changeValue', payload: {token, value}}),
+              tokenValues: state.values,
+            }}
+          >
+            <TokensTable container={tokens} limitTo={state.searchValue} autoExpand />
+          </TokenEditorContext.Provider>
+        </>
+      );
+      break;
+    }
+    case 'values': {
+      body = (
+        <>
+          <code className="dte-code dte-code--block">
+            {JSON.stringify(toStyleDictValues(state.values), null, 2)}
+          </code>
+        </>
+      );
+      break;
+    }
+  }
+
   return (
     <div className="dte-editor">
-      <div className="dte-editor__tokens">
-        <h2 className="dte-editor__section-title">Tokens</h2>
-        <TokenFilter
-          text={state.searchValue}
-          onChange={e => dispatch({type: 'search', payload: e.target.value})}
-        />
-        <TokenEditorContext.Provider
-          value={{
-            onValueChange: (token, value) =>
-              dispatch({type: 'changeValue', payload: {token, value}}),
-            tokenValues: state.values,
-          }}
-        >
-          <TokensTable container={tokens} limitTo={state.searchValue} autoExpand />
-        </TokenEditorContext.Provider>
-      </div>
-      <div
-        className={clsx(
-          'dte-editor__values',
-          state.valuesState && `dte-editor__values--${state.valuesState}`
-        )}
-      >
-        <header className="dte-editor__values-meta">
-          <h2 className="dte-editor__section-title">Values</h2>
-          <button type="button" onClick={() => dispatch({type: 'toggleValuesState'})}>
-            {state.valuesState === 'expanded' ? 'Collapse' : 'Expand'}
-          </button>
-        </header>
-        <code className="dte-code dte-code--block">
-          {JSON.stringify(toStyleDictValues(state.values), null, 2)}
-        </code>
-      </div>
+      <ViewModePicker
+        viewMode={state.viewMode}
+        onChangeViewMode={viewMode =>
+          dispatch({type: 'setViewMode', payload: viewMode})
+        }
+      />
+      {body}
     </div>
   );
 };

@@ -1,8 +1,10 @@
-@import './kv';
 @import './code';
+@import './color-preview';
+@import './editor';
+@import './filter';
+@import './kv';
+@import './sub-nav';
 @import './token-row';
 @import './token-value-input';
-@import './color-preview';
 @import './tokens-block';
-@import './filter';
-@import './editor';
+@import './view-mode-selector';

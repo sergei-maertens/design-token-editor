@@ -1,0 +1,15 @@
+@use 'bem';
+
+.dte-view-mode-selector {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--dte-token-row-font-family);
+  padding: 0.5rem 0;
+
+  &:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+}

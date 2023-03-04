@@ -3,7 +3,6 @@
 .dte-editor {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
   font-family: var(--dte-editor-font-family);
 
   @include bem.element('section-title') {
@@ -11,31 +10,6 @@
 
     &:not(:last-child) {
       margin-bottom: 0.5rem;
-    }
-  }
-  @include bem.element('values-meta') {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  @include bem.element('values') {
-    box-sizing: border-box;
-    position: var(--dte-editor-values-position);
-    bottom: 0;
-    background: var(--dte-editor-values-background);
-    border-top: solid xpx #ddd;
-    padding: 0.5rem;
-    box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.2);
-    overflow-y: auto;
-
-    @include bem.modifier('collapsed') {
-      max-height: 10vh;
-    }
-
-    @include bem.modifier('expanded') {
-      height: auto;
-      max-height: 90vh;
     }
   }
 }
