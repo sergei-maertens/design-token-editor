@@ -90,7 +90,7 @@ const TokenRow = ({designToken}: TokenRowProps): JSX.Element => {
             </button>
           ) : null}
           {editorMode === 'documentation' ? (
-            <span className="dte-code dte-code--inline">{value}</span>
+            <span className="dte-code dte-code--inline">{currentValue}</span>
           ) : (
             <TokenValueInput
               name={tokenPath}
