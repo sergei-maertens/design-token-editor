@@ -2,9 +2,10 @@ import React, {PropsWithChildren} from 'react';
 import clsx from 'clsx';
 
 import TokenRow from './TokenRow';
-import {DesignToken} from './types';
+import {DesignToken, GroupExtensions, DesignTokenGroup} from './types';
 
 interface TokensBlockHeaderProps {
+  container: DesignTokenGroup;
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
@@ -24,6 +25,18 @@ const TokensBlockHeader = ({
       {children}
     </header>
   );
+};
+
+interface TokensBlockExtensionsProps {
+  extensions: GroupExtensions;
+}
+
+const TokensBlockExtensionsDisplay: React.FC<TokensBlockExtensionsProps> = ({
+  extensions,
+}) => {
+  const description = extensions['dte.metadata']?.groupDescription;
+  if (!description) return null;
+  return <div className="dte-tokens-block__description">{description}</div>;
 };
 
 interface TokensBlockTokenListProps {
@@ -49,12 +62,21 @@ interface TokensBlockProps {
   path: string[];
   tokens: DesignToken[];
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  container: DesignTokenGroup;
 }
 
-const TokensBlock = ({path, tokens, onClick}: TokensBlockProps): JSX.Element => {
+const TokensBlock = ({
+  path,
+  tokens,
+  onClick,
+  container,
+}: TokensBlockProps): JSX.Element => {
   return (
     <section className="dte-tokens-block">
-      <TokensBlockHeader onClick={onClick}>{path.join(' ➡️ ')}</TokensBlockHeader>
+      <TokensBlockHeader container={container} onClick={onClick}>
+        <span>{path.join(' ➡️ ')}</span>
+        <TokensBlockExtensionsDisplay extensions={container?.$extensions || {}} />
+      </TokensBlockHeader>
       {tokens.length ? <TokensBlockTokenList tokens={tokens} /> : null}
     </section>
   );

@@ -12,6 +12,11 @@
   }
 
   @include bem.element('context-row') {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
     font-weight: bolder;
     font-family: var(--dte-tokens-block-context-row-font-family);
     font-size: var(--dte-tokens-block-context-row-font-size);
@@ -28,6 +33,13 @@
     @include bem.modifier('with-click-handler') {
       cursor: pointer;
     }
+  }
+
+  @include bem.element('description') {
+    color: #444;
+    font-style: italic;
+    font-weight: normal;
+    font-size: 80%;
   }
 
   @include bem.element('tokens') {

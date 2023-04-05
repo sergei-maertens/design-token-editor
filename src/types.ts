@@ -12,7 +12,7 @@ interface DesignTokenExtensions {
   };
 }
 
-interface GroupExtensions {
+export interface GroupExtensions {
   'dte.metadata'?: {
     groupDescription?: string;
   };
@@ -33,13 +33,15 @@ export interface DesignToken {
   [key: string]: any;
 }
 
+export type DesignTokenGroup = {[key: string]: DesignTokenContainer} & {
+  $extensions?: GroupExtensions;
+};
+
 /**
  * Key-value mapping, where the value may be a design token (leaf node) or another
  * container.
  */
-export type DesignTokenContainer =
-  | DesignToken
-  | ({[key: string]: DesignTokenContainer} & {$extensions?: GroupExtensions});
+export type DesignTokenContainer = DesignToken | DesignTokenGroup;
 
 export type TopLevelContainer = {
   [key: string]: DesignTokenContainer;

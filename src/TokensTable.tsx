@@ -78,6 +78,7 @@ const TokensTableRows = ({
         path={parentScopes}
         tokens={leafNodesToRender}
         onClick={() => onToggle(parentScopes)}
+        container={container}
       />
       {branchNodesToRender}
     </>
