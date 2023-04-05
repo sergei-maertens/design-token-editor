@@ -52,7 +52,7 @@
   "homepage": "https://github.com/sergei-maertens/design-token-editor#readme",
   "devDependencies": {
     "@babel/core": "^7.20.12",
-    "@open-formulieren/design-tokens": "^0.18.0",
+    "@open-formulieren/design-tokens": "^0.25.0",
     "@storybook/addon-actions": "^6.5.15",
     "@storybook/addon-essentials": "^6.5.15",
     "@storybook/addon-interactions": "^6.5.15",
