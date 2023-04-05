@@ -1,14 +1,14 @@
-import {DesignTokenContainer} from './types';
+import {JSONType} from './types';
 
-export const isDesignToken = (node: DesignTokenContainer) => {
-  return typeof node === 'object' && 'value' in node;
+export const isDesignToken = (node: JSONType) => {
+  return node && typeof node === 'object' && 'value' in node;
 };
 
 /**
  * Check if the node is a container that has _some_ design token leaf node.
  */
-export const isContainer = (node: DesignTokenContainer): boolean => {
-  if (typeof node !== 'object') return false;
+export const isContainer = (node: JSONType): boolean => {
+  if (!node || typeof node !== 'object') return false;
   const children = Object.values(node);
   const hasDesignTokens = children.some(child => isDesignToken(child));
   if (hasDesignTokens) return true;

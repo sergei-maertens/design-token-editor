@@ -4,10 +4,9 @@ import clsx from 'clsx';
 
 import TokenEditorContext from './Context';
 import TokenFilter from './TokenFilter';
-import {DesignToken} from './TokenRow';
 import TokensTable from './TokensTable';
-import {TopLevelContainer} from './types';
-import {isDesignToken} from './util';
+import {TopLevelContainer, DesignToken, DesignTokenContainer} from './types';
+import {isContainer, isDesignToken} from './util';
 
 type ValueMap = {
   [key: string]: string;
@@ -86,13 +85,15 @@ const toStyleDictValues = (values: ValueMap): StyleDictValueMap => {
   return styleDictValues;
 };
 
-const fromStyleDictValues = (values: TopLevelContainer): ValueMap => {
+const fromStyleDictValues = (
+  values: TopLevelContainer | DesignTokenContainer
+): ValueMap => {
   const flatMap = {};
   Object.entries(values).forEach(([k, v]) => {
     if (isDesignToken(v)) {
       flatMap[k] = (v as DesignToken).value;
-    } else {
-      const nested = fromStyleDictValues(v);
+    } else if (isContainer(v)) {
+      const nested = fromStyleDictValues(v as DesignTokenContainer);
       Object.entries(nested).forEach(([nk, nv]) => {
         flatMap[`${k}.${nk}`] = nv;
       });

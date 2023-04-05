@@ -1,3 +1,11 @@
+export type JSONType =
+  | string
+  | boolean
+  | number
+  | null
+  | JSONType[]
+  | {[key: string]: JSONType};
+
 export interface DesignToken {
   name: string;
   value: string;
@@ -8,7 +16,7 @@ export interface DesignToken {
   attributes: {
     [key: string]: string;
   };
-  [key: string]: any;
+  [key: string]: JSONType;
 }
 
 /**

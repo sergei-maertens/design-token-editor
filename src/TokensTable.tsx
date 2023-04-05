@@ -108,7 +108,7 @@ const TokensTable = ({
     // remove the scope from the list, but include all the child scopes
     let nestedContainer = container as DesignTokenContainer;
     for (const bit of scope) {
-      nestedContainer = nestedContainer[bit];
+      nestedContainer = nestedContainer[bit] as DesignTokenContainer;
     }
     const nestedScopes = Object.entries(nestedContainer)
       .filter(([, container]) => !isDesignToken(container))

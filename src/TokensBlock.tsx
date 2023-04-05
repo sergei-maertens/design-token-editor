@@ -1,7 +1,8 @@
 import React, {PropsWithChildren} from 'react';
 import clsx from 'clsx';
 
-import TokenRow, {DesignToken} from './TokenRow';
+import TokenRow from './TokenRow';
+import {DesignToken} from './types';
 
 interface TokensBlockHeaderProps {
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;

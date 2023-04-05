@@ -5,18 +5,7 @@ import Color from 'color';
 import TokenEditorContext, {TokenEditorContextType} from './Context';
 import ColorPreview, {isColor} from './ColorPreview';
 import TokenValueInput from './TokenValueInput';
-
-export type DesignToken = {
-  name: string;
-  value: string;
-  original: {
-    value: string;
-  };
-  path: string[];
-  attributes: {
-    [key: string]: string;
-  };
-};
+import {DesignToken} from './types';
 
 type EditorMode = 'edit' | 'documentation';
 type InputProps = {
