@@ -1,11 +1,44 @@
 @use 'bem';
 
-.dte-token-filter {
-  display: block;
-  padding: 0.5em;
-  width: 100%;
+.dte-token-filters {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  font-family: var(--dte-editor-font-family);
+  border: solid 1px #ddd;
+  border-bottom: solid 2px #ccc;
+  box-shadow: 2px 2px 3px 0px rgba(222, 79, 232, 0.1);
+  padding: 0.5em 0;
 
-  &:not(&:last-child) {
-    margin-bottom: 0.5rem;
+  &:not(:last-child) {
+    margin-bottom: 1em;
   }
+
+  @include bem.element('filter') {
+    flex-grow: 0;
+    padding: 0 1em;
+
+    &:not(:last-child) {
+      border-right: solid 1px #ddd;
+    }
+
+    @include bem.modifier('expand') {
+      flex-grow: 1;
+    }
+  }
+
+  @include bem.element('query') {
+    padding: 0.5em 1em;
+    display: block;
+    width: 100%;
+    font-family: var(--dte-editor-font-family);
+    border: solid 1px #ddd;
+    box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.dte-radio {
+  display: flex;
+  gap: 1em;
 }

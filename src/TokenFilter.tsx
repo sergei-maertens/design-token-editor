@@ -17,8 +17,8 @@ interface FilterModeInputProps {
 
 const FilterModeInput: React.FC<FilterModeInputProps> = ({value, onChange}) => {
   return (
-    <div>
-      Tokens to show
+    <div className="dte-radio">
+      <label>Tokens to show:</label>
       <label>
         <input
           type="radio"
@@ -54,16 +54,21 @@ const TokenFilter: React.FC<TokenFilterProps> = ({
 }): JSX.Element => {
   const {mode = 'curated', query = ''} = filters;
   return (
-    <div>
-      <FilterModeInput value={mode} onChange={onChange} />
-      <input
-        className="dte-token-filter"
-        type="search"
-        name="query"
-        value={query}
-        onChange={onChange}
-        placeholder="Filter... e.g. 'color'"
-      />
+    <div className="dte-token-filters">
+      <div className="dte-token-filters__filter">
+        <FilterModeInput value={mode} onChange={onChange} />
+      </div>
+
+      <div className="dte-token-filters__filter dte-token-filters__filter--expand">
+        <input
+          className="dte-token-filters__query"
+          type="search"
+          name="query"
+          value={query}
+          onChange={onChange}
+          placeholder="Filter... e.g. 'color'"
+        />
+      </div>
     </div>
   );
 };
