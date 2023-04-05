@@ -81,6 +81,26 @@
       font-family: inherit;
     }
   }
+
+  @include bem.element('comment') {
+    flex-basis: 100%;
+  }
+}
+
+.dte-token-docs {
+  font-family: var(--dte-token-row-font-family);
+  margin: 0;
+  padding: 0 1em 0.5em;
+  font-size: 0.85em;
+  color: #444;
+  font-style: italic;
+
+  @include bem.modifier('inline') {
+    display: block;
+  }
+  @include bem.modifier('bottom') {
+    display: none;
+  }
 }
 
 @include responsive.when-container('token-block', $min-size: 400px) {
@@ -99,6 +119,16 @@
 
     .dte-kv__key {
       --dte-kv-key-display: none;
+    }
+  }
+
+  .dte-token-docs {
+    @include bem.modifier('inline') {
+      display: none;
+    }
+    @include bem.modifier('bottom') {
+      display: block;
+      padding-left: 0.2em;
     }
   }
 }
