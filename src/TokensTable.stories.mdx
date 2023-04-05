@@ -12,8 +12,18 @@ Displays a table with the (JSON) path of the token, the current value (which can
 edited) and where the current value is coming from (either a reference to another token,
 or a literal value).
 
-export const Template = ({container, limitTo = null, autoExpand, filterEnabled=false}) => (
-  <TokensTable container={container} limitTo={limitTo} autoExpand={autoExpand} filterEnabled={filterEnabled} />
+export const Template = ({
+  container,
+  limitTo = null,
+  autoExpand,
+  filterEnabled = false,
+}) => (
+  <TokensTable
+    container={container}
+    limitTo={limitTo}
+    autoExpand={autoExpand}
+    filterEnabled={filterEnabled}
+  />
 );
 
 ## Rendering all tokens of a theme
@@ -44,7 +54,10 @@ export const Template = ({container, limitTo = null, autoExpand, filterEnabled=f
 ## Enable filters
 
 <Canvas>
-  <Story name="Filters enabled" args={{container: ofDesignTokens, filterEnabled: true, autoExpand: true}}>
+  <Story
+    name="Filters enabled"
+    args={{container: ofDesignTokens, filterEnabled: true, autoExpand: true}}
+  >
     {Template.bind({})}
   </Story>
 </Canvas>
