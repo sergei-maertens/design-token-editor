@@ -1,9 +1,15 @@
-import React, {useState} from 'react';
+import React, {useState, useReducer} from 'react';
 import isEqual from 'lodash.isequal';
 
 import TokensBlock from './TokensBlock';
 import {isDesignToken, isContainer} from './util';
-import {DesignTokenContainer, DesignToken, TopLevelContainer} from './types';
+import {
+  DesignTokenContainer,
+  DesignToken,
+  TopLevelContainer,
+  DesignTokenGroup,
+} from './types';
+import TokenFilter, {applyFilters, TokenFilterState} from './TokenFilter';
 
 type ContainerNode = [string, DesignTokenContainer];
 
@@ -78,26 +84,59 @@ const TokensTableRows = ({
         path={parentScopes}
         tokens={leafNodesToRender}
         onClick={() => onToggle(parentScopes)}
-        container={container}
+        container={container as DesignTokenGroup}
       />
       {branchNodesToRender}
     </>
   );
 };
 
+interface TokenTableState {
+  filters: TokenFilterState;
+}
+
+type UpdateFilterAction = {
+  type: 'updateFilter';
+  payload: React.ChangeEvent<HTMLInputElement>;
+};
+
+type ReducerAction = UpdateFilterAction;
+
+const initialState = {
+  filters: {
+    mode: 'curated',
+    query: '',
+  },
+} satisfies TokenTableState;
+
+const reducer = (state: TokenTableState, action: ReducerAction): TokenTableState => {
+  switch (action.type) {
+    case 'updateFilter': {
+      const {name, value} = action.payload.target;
+      const filters = {...state.filters, [name]: value};
+      return {...state, filters};
+    }
+  }
+};
+
 interface TokensTableProps {
   container: TopLevelContainer;
   limitTo?: string;
   autoExpand?: boolean;
+  filterEnabled?: boolean;
 }
 
 const TokensTable = ({
   container,
   limitTo = '',
   autoExpand = false,
+  filterEnabled = false,
 }: TokensTableProps): JSX.Element => {
   const namespaces = Object.keys(container).map(namespace => [namespace]);
   const [closedScopes, setClosedScopes] = useState(autoExpand ? [] : namespaces);
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const filteredContainer = applyFilters(filterEnabled, state.filters, container);
 
   const onToggle = (scope: string[]) => {
     const isClosed = closedScopes.some(_scope => isEqual(_scope, scope));
@@ -123,7 +162,9 @@ const TokensTable = ({
     return;
   };
 
-  const children = Object.entries(container)
+  const children = (
+    Object.entries(filteredContainer) as [string, DesignTokenContainer][]
+  )
     .filter(([key]) => {
       if (!limitTo) return true;
       if (key.length < limitTo.length) {
@@ -142,7 +183,18 @@ const TokensTable = ({
       />
     ));
 
-  return <>{children}</>;
+  return (
+    <>
+      {filterEnabled ? (
+        <TokenFilter
+          filters={state.filters}
+          onChange={event => dispatch({type: 'updateFilter', payload: event})}
+        />
+      ) : null}
+
+      {children}
+    </>
+  );
 };
 
 export default TokensTable;

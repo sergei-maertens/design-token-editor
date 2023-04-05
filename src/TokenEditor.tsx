@@ -3,7 +3,6 @@ import React, {useEffect, useReducer} from 'react';
 import clsx from 'clsx';
 
 import TokenEditorContext from './Context';
-import TokenFilter from './TokenFilter';
 import TokensTable from './TokensTable';
 import {TopLevelContainer, DesignToken, DesignTokenContainer} from './types';
 import {isContainer, isDesignToken} from './util';
@@ -24,18 +23,12 @@ type ViewMode = 'tokens' | 'values';
 
 interface TokenEditorState {
   viewMode: ViewMode;
-  searchValue: string;
   values: ValueMap;
 }
 
 type SetViewModeAction = {
   type: 'setViewMode';
   payload: ViewMode;
-};
-
-type SearchAction = {
-  type: 'search';
-  payload: string;
 };
 
 type ChangeValueAction = {
@@ -46,11 +39,10 @@ type ChangeValueAction = {
   };
 };
 
-type ReducerAction = SetViewModeAction | SearchAction | ChangeValueAction;
+type ReducerAction = SetViewModeAction | ChangeValueAction;
 
 const initialState: TokenEditorState = {
   viewMode: 'tokens',
-  searchValue: '',
   values: {},
 };
 
@@ -58,9 +50,6 @@ const reducer = (state: TokenEditorState, action: ReducerAction): TokenEditorSta
   switch (action.type) {
     case 'setViewMode': {
       return {...state, viewMode: action.payload};
-    }
-    case 'search': {
-      return {...state, searchValue: action.payload};
     }
     case 'changeValue': {
       const {token, value} = action.payload;
@@ -188,10 +177,6 @@ const TokenEditor = ({
     case 'tokens': {
       body = (
         <>
-          <TokenFilter
-            text={state.searchValue}
-            onChange={e => dispatch({type: 'search', payload: e.target.value})}
-          />
           <TokenEditorContext.Provider
             value={{
               onValueChange: (token, value) => {
@@ -200,7 +185,7 @@ const TokenEditor = ({
               tokenValues: state.values,
             }}
           >
-            <TokensTable container={tokens} limitTo={state.searchValue} autoExpand />
+            <TokensTable container={tokens} filterEnabled autoExpand />
           </TokenEditorContext.Provider>
         </>
       );

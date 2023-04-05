@@ -1,0 +1,21 @@
+import {Canvas, Meta, Story, ArgsTable} from '@storybook/addon-docs';
+import ofDesignTokens from '@open-formulieren/design-tokens/dist/tokens.js';
+import utrechtDesignTokens from '@utrecht/design-tokens/dist/tokens.js';
+
+import TokenFilter from './TokenFilter';
+
+<Meta title="Private API/TokenFilter" component={TokenFilter} />
+
+## Token filter
+
+Provide filter controls to limit the tokens displayed.
+
+export const Template = ({onChange, ...args}) => (
+  <TokenFilter onChange={onChange} {...args} />
+);
+
+<Canvas>
+  <Story name="Default" args={{filters: {query: 'a query', mode: 'curated'}}}>
+    {Template.bind({})}
+  </Story>
+</Canvas>

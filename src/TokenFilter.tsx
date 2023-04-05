@@ -1,21 +1,123 @@
 import React, {ChangeEvent} from 'react';
 
-interface TokenFilterProps {
-  text: string;
-  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
+import {TopLevelContainer, DesignToken, DesignTokenContainer} from './types';
+import {isContainer, isDesignToken} from './util';
+
+type FILTER_MODE = 'all' | 'curated';
+
+export interface TokenFilterState {
+  mode: FILTER_MODE;
+  query: string;
 }
 
-const TokenFilter = ({text, onChange}: TokenFilterProps): JSX.Element => {
+interface FilterModeInputProps {
+  value: FILTER_MODE;
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+}
+
+const FilterModeInput: React.FC<FilterModeInputProps> = ({value, onChange}) => {
   return (
-    <input
-      className="dte-token-filter"
-      type="search"
-      name="filter"
-      value={text}
-      onChange={onChange}
-      placeholder="Filter... e.g. 'of.button'"
-    />
+    <div>
+      Tokens to show
+      <label>
+        <input
+          type="radio"
+          name="mode"
+          value="all"
+          checked={value === 'all'}
+          onChange={onChange}
+        />
+        All
+      </label>
+      <label>
+        <input
+          type="radio"
+          name="mode"
+          value="curated"
+          checked={value === 'curated'}
+          onChange={onChange}
+        />
+        Pre-selected
+      </label>
+    </div>
   );
+};
+
+interface TokenFilterProps {
+  filters: TokenFilterState;
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+}
+
+const TokenFilter: React.FC<TokenFilterProps> = ({
+  filters = {},
+  onChange,
+}): JSX.Element => {
+  const {mode = 'curated', query = ''} = filters;
+  return (
+    <div>
+      <FilterModeInput value={mode} onChange={onChange} />
+      <input
+        className="dte-token-filter"
+        type="search"
+        name="query"
+        value={query}
+        onChange={onChange}
+        placeholder="Filter... e.g. 'color'"
+      />
+    </div>
+  );
+};
+
+const shouldIncludeToken = (filters: TokenFilterState, token: DesignToken): boolean => {
+  const {mode, query} = filters;
+
+  // check for curated tokens mode
+  const isCurated = token?.$extensions?.['dte.metadata']?.isCurated;
+  if (mode === 'curated' && !isCurated) {
+    return false;
+  }
+
+  // check if there is a query and if it matches
+  if (query) {
+    const normalizedQuery = query.toLocaleLowerCase();
+    if (token.path.join('.').includes(normalizedQuery)) {
+      return true;
+    }
+    const normalizedComment = (token?.comment || '').toLocaleLowerCase();
+    return normalizedComment.includes(normalizedQuery);
+  }
+
+  return true;
+};
+
+export const applyFilters = (
+  filterEnabled: boolean,
+  filters: TokenFilterState,
+  container: TopLevelContainer
+): DesignTokenContainer => {
+  if (!filterEnabled) return container;
+
+  const filteredContainer = {};
+  Object.entries(container).forEach(([key, nested]) => {
+    if (key === '$extensions') {
+      filteredContainer[key] = nested;
+      return;
+    }
+
+    if (isDesignToken(nested)) {
+      if (shouldIncludeToken(filters, nested as DesignToken)) {
+        filteredContainer[key] = nested;
+      }
+    } else if (isContainer(nested)) {
+      const nestedFilteredContainer = applyFilters(filterEnabled, filters, nested);
+      if (!Object.entries(nestedFilteredContainer).length) {
+        return;
+      }
+      filteredContainer[key] = nestedFilteredContainer;
+    }
+  });
+
+  return filteredContainer;
 };
 
 export default TokenFilter;
