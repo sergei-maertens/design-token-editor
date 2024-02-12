@@ -1,0 +1,14 @@
+import {Canvas, Meta, ArgsTable} from '@storybook/blocks';
+import * as TokensBlockStories from './TokensBlock.stories';
+
+import TokensBlock from './TokensBlock';
+
+<Meta of={TokensBlockStories} />
+
+## Tokens block
+
+Displays a context header with the relevant tokens contained inside.
+
+<Canvas of={TokensBlockStories.Default} />
+
+<ArgsTable of={TokensBlock} />

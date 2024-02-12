@@ -1,0 +1,34 @@
+import {Canvas, Meta, ArgsTable} from '@storybook/blocks';
+import * as ColorPreviewStories from './ColorPreview.stories';
+
+import ColorPreview from './ColorPreview';
+
+<Meta of={ColorPreviewStories} />
+
+## Color preview
+
+Show a preview of what a color looks like.
+
+### Formats
+
+Any valid way to specify a CSS color is accepted.
+
+<Canvas of={ColorPreviewStories.HEX} />
+<Canvas of={ColorPreviewStories.RGB} />
+<Canvas of={ColorPreviewStories.RGBA} />
+<Canvas of={ColorPreviewStories.HSLA} />
+
+<ArgsTable of={ColorPreview} />
+
+### `isColor` utility
+
+Use the `isColor` utility to check if a value is a valid CSS color before rendering this
+component.
+
+```jsx
+import ColorPreview, {isColor} from './ColorPreview';
+
+const MyComponent = () => {
+  return isColor('rgb(255, 0, 0)') ? <ColorPreview color="rgb(255, 0, 0)" /> : null;
+};
+```

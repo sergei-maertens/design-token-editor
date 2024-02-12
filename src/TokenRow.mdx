@@ -1,0 +1,31 @@
+import {Canvas, Meta, ArgsTable} from '@storybook/blocks';
+import * as TokenRowStories from './TokenRow.stories';
+
+import TokenRow from './TokenRow';
+
+<Meta of={TokenRowStories} />
+
+## Token row
+
+The token row adapts its layout based on the container it is in - by default it's
+displayed in 'mobile'/'narrow' view, but on wider containers the content is displayed in
+a single row.
+
+_This relies on the `@container` queries, which are fairly new - not all browsers
+support this yet!_
+
+**Default**
+
+<Canvas of={TokenRowStories.Default} />
+
+**Contained**
+
+<Canvas of={TokenRowStories.Contained} />
+
+**CSS color properties**
+
+<Canvas of={TokenRowStories.CssColorInherit} />
+
+## Props
+
+<ArgsTable of={TokenRow} />

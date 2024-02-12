@@ -134,7 +134,7 @@ const reducer = (state: TokenTableState, action: ReducerAction): TokenTableState
   }
 };
 
-interface TokensTableProps {
+export interface TokensTableProps {
   container: TopLevelContainer;
   limitTo?: string;
   autoExpand?: boolean;

@@ -43,7 +43,7 @@ const FilterModeInput: React.FC<FilterModeInputProps> = ({value, onChange}) => {
   );
 };
 
-interface TokenFilterProps {
+export interface TokenFilterProps {
   filters: TokenFilterState;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }

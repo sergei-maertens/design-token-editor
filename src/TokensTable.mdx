@@ -1,0 +1,33 @@
+import {Canvas, Meta, ArgsTable} from '@storybook/blocks';
+import * as TokensTableStories from './TokensTable.stories';
+
+import TokensTable from './TokensTable';
+
+<Meta of={TokensTableStories} />
+
+## Tokens table
+
+Displays a table with the (JSON) path of the token, the current value (which can be
+edited) and where the current value is coming from (either a reference to another token,
+or a literal value).
+
+## Rendering all tokens of a theme
+
+<Canvas of={TokensTableStories.Default} />
+
+## Limit rendering to a component
+
+<Canvas of={TokensTableStories.LimitedToComponent} />
+
+<ArgsTable of={TokensTable} />
+
+## Enable filters
+
+<Canvas of={TokensTableStories.FiltersEnabled} />
+
+## 'Unexpected' token shapes
+
+Some style-dictionary configuration can result in additional properties being there but
+the value key missing.
+
+<Canvas of={TokensTableStories.UtrechtTokens} />

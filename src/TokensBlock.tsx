@@ -58,7 +58,7 @@ const TokensBlockTokenList = ({tokens}: TokensBlockTokenListProps): JSX.Element 
   );
 };
 
-interface TokensBlockProps {
+export interface TokensBlockProps {
   path: string[];
   tokens: DesignToken[];
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;

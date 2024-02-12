@@ -1,0 +1,27 @@
+import {useState} from 'react';
+import {Canvas, Meta, ArgsTable} from '@storybook/blocks';
+import ofDesignTokens from '@open-formulieren/design-tokens/dist/tokens.js';
+import * as TokenEditorStories from './TokenEditor.stories';
+
+import TokenEditor from './TokenEditor';
+
+<Meta of={TokenEditorStories} />
+
+## Token editor
+
+Given a style-dictionary tokens output (resolved state of all token files), show an
+editor to inspect and modify values of design tokens.
+
+The underlying components can be used to document components in your own storybook
+instance or even expose controls for theme builders.
+
+When changes are made in the editor, the new style-dictionary tree of the tokens is
+provided to the `onChange` callback prop.
+
+<Canvas of={TokenEditorStories.Default} />
+
+<ArgsTable of={TokenEditor} />
+
+## With a callback function to capture edits
+
+<Canvas of={TokenEditorStories.OnChangeCallback} />

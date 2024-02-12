@@ -12,7 +12,7 @@ type StyleDictValue = {
   value: string;
 };
 
-type StyleDictValueMap = {
+export type StyleDictValueMap = {
   [key: string]: StyleDictValue | StyleDictValueMap;
 };
 
@@ -166,7 +166,7 @@ const ViewModePicker = ({
   );
 };
 
-interface TokenEditorProps {
+export interface TokenEditorProps {
   tokens: TopLevelContainer;
   initialValues?: TopLevelContainer;
   onChange?: (values: StyleDictValueMap) => void;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface ColorPreviewProps {
+export interface ColorPreviewProps {
   color: string;
 }
 
