@@ -1,5 +1,4 @@
 import React, {useState, useReducer} from 'react';
-import isEqual from 'lodash.isequal';
 
 import TokensBlock from './TokensBlock';
 import {isDesignToken, isContainer} from './util';
@@ -10,6 +9,14 @@ import {
   DesignTokenGroup,
 } from './types';
 import TokenFilter, {applyFilters, TokenFilterState} from './TokenFilter';
+
+const areScopesEqual = (scope1: string[], scope2: string[]) => {
+  // compare by checking if all elements are the same. An element could have a period
+  // character inside, so simply joining and comparing strings could lead to false
+  // positives.
+  if (scope1.length !== scope2.length) return false;
+  return scope1.every((item, index) => scope2[index] === item);
+};
 
 type ContainerNode = [string, DesignTokenContainer];
 
@@ -43,10 +50,11 @@ const TokensTableRows = ({
   });
 
   const leafNodesToRender = leafNodes.filter((token: DesignToken) => {
-    const tokenPath = token.path.join('.');
-    const isHidden = closedScopes.some(closedScope =>
-      tokenPath.startsWith(closedScope.join('.'))
-    );
+    const isHidden = closedScopes.some(closedScope => {
+      const scopeSize = closedScope.length;
+      const tokenScopePrefix = token.path.slice(0, scopeSize);
+      return areScopesEqual(closedScope, tokenScopePrefix);
+    });
     return !isHidden;
   });
 
@@ -62,9 +70,16 @@ const TokensTableRows = ({
       : false;
     if (isExcluded) return null;
 
-    const isHidden = closedScopes.some(closedScope =>
-      containerPath.startsWith(`${closedScope.join('.')}.`)
-    );
+    const isHidden = closedScopes.some(closedScope => {
+      const scopeSize = closedScope.length;
+      const tokenScopePrefix = containerScope.slice(0, scopeSize);
+      if (!areScopesEqual(closedScope, tokenScopePrefix)) {
+        return false;
+      }
+      // display the nodes that are one level deeper so that they can be clicked to
+      // expand/collapse
+      return containerScope.length - scopeSize === 1;
+    });
     if (isHidden) return null;
     return (
       <TokensTableRows
@@ -139,7 +154,7 @@ const TokensTable = ({
   const filteredContainer = applyFilters(filterEnabled, state.filters, container);
 
   const onToggle = (scope: string[]) => {
-    const isClosed = closedScopes.some(_scope => isEqual(_scope, scope));
+    const isClosed = closedScopes.some(_scope => areScopesEqual(_scope, scope));
     if (!isClosed) {
       setClosedScopes([...closedScopes, scope]);
       return;
@@ -155,7 +170,7 @@ const TokensTable = ({
       .map(([key]) => [...scope, key]);
 
     const newClosedScopes = [
-      ...closedScopes.filter(_scope => !isEqual(_scope, scope)),
+      ...closedScopes.filter(_scope => !areScopesEqual(_scope, scope)),
       ...nestedScopes,
     ];
     setClosedScopes(newClosedScopes);
