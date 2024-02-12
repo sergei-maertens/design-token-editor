@@ -28,7 +28,7 @@ const TokenRow = ({designToken}: TokenRowProps): JSX.Element => {
   const {value, original, path, comment} = designToken;
   const tokenPath = path.join('.');
 
-  const currentValue = context?.tokenValues?.[tokenPath] || value;
+  const currentValue = context?.tokenValues?.get(path) || value;
   const currentValueIsColor = isColor(currentValue);
   const originalValueIsColor = isColor(original.value);
   const currentColor = currentValueIsColor ? Color(currentValue).hex() : '';
@@ -45,11 +45,11 @@ const TokenRow = ({designToken}: TokenRowProps): JSX.Element => {
     case 'edit': {
       inputProps = {
         value:
-          context?.tokenValues[tokenPath] || (currentValueIsColor ? currentColor : ''),
+          context?.tokenValues.get(path) || (currentValueIsColor ? currentColor : ''),
       };
       if (context) {
         inputProps.onChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-          context.onValueChange(tokenPath, e.target.value);
+          context.onValueChange(path, e.target.value);
       }
       break;
     }

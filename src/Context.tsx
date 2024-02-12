@@ -1,10 +1,8 @@
 import React from 'react';
 
 export type TokenEditorContextType = {
-  onValueChange: (token: string, newValue: string) => void;
-  tokenValues: {
-    [key: string]: string;
-  };
+  onValueChange: (token: string[], newValue: string) => void;
+  tokenValues: Map<string[], string>;
 };
 
 const TokenEditorContext = React.createContext<TokenEditorContextType | null>(null);

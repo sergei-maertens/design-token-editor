@@ -1,15 +1,12 @@
-import set from 'lodash.set';
 import React, {useEffect, useReducer} from 'react';
 import clsx from 'clsx';
 
 import TokenEditorContext from './Context';
 import TokensTable from './TokensTable';
-import {TopLevelContainer, DesignToken, DesignTokenContainer} from './types';
+import {TopLevelContainer, DesignTokenContainer} from './types';
 import {isContainer, isDesignToken} from './util';
 
-type ValueMap = {
-  [key: string]: string;
-};
+type ValueMap = Map<string[], string>;
 
 type StyleDictValue = {
   value: string;
@@ -34,7 +31,7 @@ type SetViewModeAction = {
 type ChangeValueAction = {
   type: 'changeValue';
   payload: {
-    token: string;
+    token: string[];
     value: string;
   };
 };
@@ -43,7 +40,7 @@ type ReducerAction = SetViewModeAction | ChangeValueAction;
 
 const initialState: TokenEditorState = {
   viewMode: 'tokens',
-  values: {},
+  values: new Map(),
 };
 
 const reducer = (state: TokenEditorState, action: ReducerAction): TokenEditorState => {
@@ -54,10 +51,16 @@ const reducer = (state: TokenEditorState, action: ReducerAction): TokenEditorSta
     case 'changeValue': {
       const {token, value} = action.payload;
       const {values} = state;
-      const newValues = {...values, [token]: value};
+
+      // mutate existing object, but then make sure to make a new instance since React
+      // does reference comparison, not value (!). We prefer map as a datastructure since
+      // we can use arrays as keys.
       if (value === '') {
-        delete newValues[token];
+        values.delete(token);
+      } else {
+        values.set(token, value);
       }
+      const newValues = new Map(values);
       return {...state, values: newValues};
     }
     default:
@@ -66,29 +69,44 @@ const reducer = (state: TokenEditorState, action: ReducerAction): TokenEditorSta
 };
 
 const toStyleDictValues = (values: ValueMap): StyleDictValueMap => {
-  let styleDictValues = {};
-  for (const [key, value] of Object.entries(values)) {
-    if (value === '') continue;
-    set(styleDictValues, key, {value: value});
-  }
+  let styleDictValues = {} satisfies StyleDictValueMap;
+
+  values.forEach((value, tokenPathBits) => {
+    if (value === '') return;
+
+    let parent = styleDictValues;
+
+    // deep assign for each bit in tokenPathBits
+    for (const bit of tokenPathBits) {
+      if (!parent[bit]) {
+        parent[bit] = {};
+      }
+      parent = parent[bit];
+    }
+
+    (parent as StyleDictValue).value = value;
+  });
+
   return styleDictValues;
 };
 
 const fromStyleDictValues = (
-  values: TopLevelContainer | DesignTokenContainer
+  values: TopLevelContainer | DesignTokenContainer,
+  parentPath: string[] = []
 ): ValueMap => {
-  const flatMap = {};
+  const valueMap = new Map<string[], string>();
   Object.entries(values).forEach(([k, v]) => {
-    if (isDesignToken(v)) {
-      flatMap[k] = (v as DesignToken).value;
+    const path = [...parentPath, k];
+    if (isDesignToken<StyleDictValue>(v)) {
+      valueMap.set(path, v.value);
     } else if (isContainer(v)) {
-      const nested = fromStyleDictValues(v as DesignTokenContainer);
-      Object.entries(nested).forEach(([nk, nv]) => {
-        flatMap[`${k}.${nk}`] = nv;
+      const nested = fromStyleDictValues(v, path);
+      nested.forEach((value, key) => {
+        valueMap.set(key, value);
       });
     }
   });
-  return flatMap;
+  return valueMap;
 };
 
 type ViewModeItemProps = {
