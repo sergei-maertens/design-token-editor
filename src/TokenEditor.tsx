@@ -69,22 +69,21 @@ const reducer = (state: TokenEditorState, action: ReducerAction): TokenEditorSta
 };
 
 const toStyleDictValues = (values: ValueMap): StyleDictValueMap => {
-  let styleDictValues = {} satisfies StyleDictValueMap;
+  let styleDictValues: StyleDictValueMap = {};
 
   values.forEach((value, tokenPathBits) => {
     if (value === '') return;
 
-    let parent = styleDictValues;
-
     // deep assign for each bit in tokenPathBits
+    let parent = styleDictValues;
     for (const bit of tokenPathBits) {
       if (!parent[bit]) {
         parent[bit] = {};
       }
-      parent = parent[bit];
+      // a lie for the last iteration, but we correct it later
+      parent = parent[bit] as StyleDictValueMap;
     }
-
-    (parent as StyleDictValue).value = value;
+    (parent as unknown as StyleDictValue).value = value;
   });
 
   return styleDictValues;

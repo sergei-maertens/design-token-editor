@@ -102,7 +102,7 @@ export const applyFilters = (
 ): DesignTokenContainer => {
   if (!filterEnabled) return container;
 
-  const filteredContainer = {};
+  const filteredContainer: TopLevelContainer = {};
   Object.entries(container).forEach(([key, nested]) => {
     if (key === '$extensions') {
       filteredContainer[key] = nested;
