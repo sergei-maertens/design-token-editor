@@ -9,13 +9,12 @@ const colorTokens = Object.values(ofDesignTokens.of.color).filter(
   (potentialToken: DesignToken) => 'value' in potentialToken
 ) as DesignToken[];
 
-const meta = {
+export default {
   title: 'Public API/TokensBlock',
   component: TokensBlock,
 } satisfies Meta<typeof TokensBlock>;
-export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof TokensBlock>;
 
 export const Default: Story = {
   name: 'Default',

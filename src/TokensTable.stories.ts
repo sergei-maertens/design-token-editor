@@ -5,7 +5,7 @@ import utrechtDesignTokens from '@utrecht/design-tokens/dist/tokens.js';
 
 import TokensTable from './TokensTable';
 
-const meta = {
+export default {
   title: 'Public API/TokensTable',
   component: TokensTable,
   args: {
@@ -14,9 +14,8 @@ const meta = {
     container: ofDesignTokens,
   },
 } satisfies Meta<typeof TokensTable>;
-export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof TokensTable>;
 
 export const Default = {
   name: 'Default',

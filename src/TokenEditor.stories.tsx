@@ -1,4 +1,5 @@
-import {useState} from 'react';
+// @ts-expect-error
+import React, {useState} from 'react';
 import {Meta, StoryObj, StoryFn} from '@storybook/react-webpack5';
 // @ts-expect-error
 import ofDesignTokens from '@open-formulieren/design-tokens/dist/tokens.js';
@@ -6,13 +7,12 @@ import ofDesignTokens from '@open-formulieren/design-tokens/dist/tokens.js';
 import TokenEditor from './TokenEditor';
 import type {TopLevelContainer} from './types';
 
-const meta = {
+export default {
   title: 'Public API/TokenEditor',
   component: TokenEditor,
 } satisfies Meta<typeof TokenEditor>;
-export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof TokenEditor>;
 
 export const Default: Story = {
   name: 'Default',

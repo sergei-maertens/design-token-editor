@@ -2,13 +2,12 @@ import {Meta, StoryObj} from '@storybook/react-webpack5';
 
 import ColorPreview from './ColorPreview';
 
-const meta = {
+export default {
   title: 'Private API/ColorPreview',
   component: ColorPreview,
 } satisfies Meta<typeof ColorPreview>;
-export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof ColorPreview>;
 
 export const HEX: Story = {
   name: 'Hex',

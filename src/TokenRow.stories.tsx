@@ -8,14 +8,13 @@ type TokenRowPropsAndCustomArgs = React.ComponentProps<typeof TokenRow> & {
   contained?: boolean;
 };
 
-const meta = {
+export default {
   title: 'Private API/TokenRow',
   component: TokenRow,
   args: {
     contained: false,
   },
 } satisfies Meta<TokenRowPropsAndCustomArgs>;
-export default meta;
 
 const render: StoryFn<TokenRowPropsAndCustomArgs> = ({
   designToken,
