@@ -1,6 +1,6 @@
 {
   "name": "design-token-editor",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "A react component to view/edit design token values",
   "main": "./lib/index.js",
   "type": "module",
