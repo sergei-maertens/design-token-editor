@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {Canvas, Meta, ArgsTable} from '@storybook/blocks';
+import {Canvas, Meta, ArgTypes} from '@storybook/addon-docs/blocks';
 import ofDesignTokens from '@open-formulieren/design-tokens/dist/tokens.js';
 import * as TokenEditorStories from './TokenEditor.stories';
 
@@ -20,7 +20,7 @@ provided to the `onChange` callback prop.
 
 <Canvas of={TokenEditorStories.Default} />
 
-<ArgsTable of={TokenEditor} />
+<ArgTypes of={TokenEditor} />
 
 ## With a callback function to capture edits
 

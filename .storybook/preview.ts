@@ -5,11 +5,10 @@
 import '../lib/css/dte.css';
 import '../lib/css/index.css';
 
-import {Preview} from '@storybook/react';
+import {Preview} from '@storybook/react-webpack5';
 
 const preview: Preview = {
   parameters: {
-    actions: {argTypesRegex: '^on[A-Z].*'},
     controls: {
       matchers: {
         color: /(background|color)$/i,

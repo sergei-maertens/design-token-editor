@@ -1,4 +1,4 @@
-import {Canvas, Meta, ArgsTable} from '@storybook/blocks';
+import {Canvas, Meta, ArgTypes} from '@storybook/addon-docs/blocks';
 import * as TokensTableStories from './TokensTable.stories';
 
 import TokensTable from './TokensTable';
@@ -19,7 +19,7 @@ or a literal value).
 
 <Canvas of={TokensTableStories.LimitedToComponent} />
 
-<ArgsTable of={TokensTable} />
+<ArgTypes of={TokensTable} />
 
 ## Enable filters
 

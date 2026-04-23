@@ -1,4 +1,4 @@
-import {Meta, StoryObj, StoryFn} from '@storybook/react';
+import {Meta, StoryObj, StoryFn} from '@storybook/react-webpack5';
 // @ts-expect-errors
 import ofDesignTokens from '@open-formulieren/design-tokens/dist/tokens.js';
 

@@ -1,4 +1,4 @@
-import {Canvas, Meta, ArgsTable} from '@storybook/blocks';
+import {Canvas, Meta, ArgTypes} from '@storybook/addon-docs/blocks';
 import * as ColorPreviewStories from './ColorPreview.stories';
 
 import ColorPreview from './ColorPreview';
@@ -18,7 +18,7 @@ Any valid way to specify a CSS color is accepted.
 <Canvas of={ColorPreviewStories.RGBA} />
 <Canvas of={ColorPreviewStories.HSLA} />
 
-<ArgsTable of={ColorPreview} />
+<ArgTypes of={ColorPreview} />
 
 ### `isColor` utility
 
