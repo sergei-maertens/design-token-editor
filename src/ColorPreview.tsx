@@ -14,7 +14,7 @@ export const isColor = (value: string): boolean => {
   return s.color !== '' && !UNPARSABLE_COLOR_VALUES.includes(s.color);
 };
 
-const ColorPreview = ({color}: ColorPreviewProps): JSX.Element | null => {
+const ColorPreview: React.FC<ColorPreviewProps> = ({color}) => {
   const style = {'--dte-color-preview-color': color} as React.CSSProperties;
   return (
     <div className="dte-color-preview" style={style} title={color}>

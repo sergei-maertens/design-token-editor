@@ -9,10 +9,10 @@ interface TokensBlockHeaderProps {
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-const TokensBlockHeader = ({
+const TokensBlockHeader: React.FC<PropsWithChildren<TokensBlockHeaderProps>> = ({
   onClick,
   children,
-}: PropsWithChildren<TokensBlockHeaderProps>): JSX.Element => {
+}) => {
   const className = clsx('dte-tokens-block__context-row', {
     'dte-tokens-block__context-row--with-click-handler': !!onClick,
   });
@@ -43,7 +43,7 @@ interface TokensBlockTokenListProps {
   tokens: DesignToken[];
 }
 
-const TokensBlockTokenList = ({tokens}: TokensBlockTokenListProps): JSX.Element => {
+const TokensBlockTokenList: React.FC<TokensBlockTokenListProps> = ({tokens}) => {
   return (
     <div className="dte-tokens-block__tokens">
       <div className="dte-token-row dte-token-row--header">
@@ -65,12 +65,12 @@ export interface TokensBlockProps {
   container: DesignTokenGroup;
 }
 
-const TokensBlock = ({
+const TokensBlock: React.FC<TokensBlockProps> = ({
   path,
   tokens,
   onClick,
   container,
-}: TokensBlockProps): JSX.Element => {
+}) => {
   return (
     <section className="dte-tokens-block">
       <TokensBlockHeader container={container} onClick={onClick}>

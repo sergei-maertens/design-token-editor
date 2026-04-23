@@ -2,16 +2,14 @@
   "name": "design-token-editor",
   "version": "0.6.0",
   "description": "A react component to view/edit design token values",
-  "main": "./lib/cjs/index.js",
-  "module": "./lib/esm/index.js",
-  "types": "./lib/esm/index.d.ts",
+  "main": "./lib/index.js",
+  "type": "module",
+  "types": "./lib/index.d.ts",
   "exports": {
     ".": {
-      "import": "./lib/esm/index.js",
-      "require": "./lib/cjs/index.js",
-      "default": "./lib/cjs/index.js"
+      "import": "./lib/index.js"
     },
-    "./esm/": "./lib/esm/",
+    "./esm/": "./lib/",
     "./css/": "./lib/css/",
     "./tokens": "./lib/tokens/tokens.js",
     "./lib/": "./lib/"
@@ -19,7 +17,6 @@
   "scripts": {
     "start": "npm-run-all -p watch:* storybook",
     "build:esm": "tsc",
-    "build:cjs": "tsc --module commonjs --outDir lib/cjs",
     "build:design-tokens": "style-dictionary build -c style-dictionary.config.json",
     "build:sass": "sass src/styles/index.scss lib/css/dte.css",
     "build": "npm-run-all build:*",
@@ -53,15 +50,16 @@
   "devDependencies": {
     "@babel/core": "^7.20.12",
     "@babel/preset-env": "^7.23.9",
-    "@babel/preset-react": "^7.23.3",
+    "@babel/preset-react": "^7.28.5",
     "@babel/preset-typescript": "^7.23.3",
     "@open-formulieren/design-tokens": "^0.25.0",
+    "@storybook/addon-docs": "10.3.5",
     "@storybook/addon-links": "10.3.5",
     "@storybook/addon-webpack5-compiler-babel": "^4.0.1",
     "@storybook/react-webpack5": "10.3.5",
     "@types/color": "^3.0.3",
-    "@types/react": "^18.0.27",
-    "@types/react-dom": "^18.0.10",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
     "@utrecht/design-tokens": "^1.0.0-alpha.429",
     "babel-loader": "^8.3.0",
     "chokidar": "^3.5.3",
@@ -73,9 +71,8 @@
     "sass": "^1.57.1",
     "storybook": "10.3.5",
     "style-dictionary": "^3.7.2",
-    "typescript": "^5.3.3",
-    "webpack": "^5.75.0",
-    "@storybook/addon-docs": "10.3.5"
+    "typescript": "^5.9.3",
+    "webpack": "^5.75.0"
   },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",

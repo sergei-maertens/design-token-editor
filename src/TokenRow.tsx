@@ -21,7 +21,7 @@ export interface TokenRowProps {
   designToken: DesignToken;
 }
 
-const TokenRow = ({designToken}: TokenRowProps): JSX.Element => {
+const TokenRow: React.FC<TokenRowProps> = ({designToken}) => {
   const context = useContext<TokenEditorContextType | null>(TokenEditorContext);
   const [editorMode, setEditorMode] = useState<EditorMode>('documentation');
 

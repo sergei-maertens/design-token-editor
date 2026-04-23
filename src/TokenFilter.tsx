@@ -48,10 +48,7 @@ export interface TokenFilterProps {
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const TokenFilter: React.FC<TokenFilterProps> = ({
-  filters = {},
-  onChange,
-}): JSX.Element => {
+const TokenFilter: React.FC<TokenFilterProps> = ({filters = {}, onChange}) => {
   const {mode = 'curated', query = ''} = filters;
   return (
     <div className="dte-token-filters">

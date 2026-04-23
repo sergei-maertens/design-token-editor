@@ -2,13 +2,12 @@ import {Meta, StoryObj} from '@storybook/react-webpack5';
 
 import TokenFilter from './TokenFilter';
 
-const meta = {
+export default {
   title: 'Private API/TokenFilter',
   component: TokenFilter,
 } satisfies Meta<typeof TokenFilter>;
-export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof TokenFilter>;
 
 export const Default: Story = {
   name: 'Default',

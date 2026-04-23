@@ -115,12 +115,12 @@ type ViewModeItemProps = {
   onChangeViewMode: (vm: ViewMode) => void;
 };
 
-const ViewModeItem = ({
+const ViewModeItem: React.FC<ViewModeItemProps> = ({
   viewMode,
   label,
   currentViewMode,
   onChangeViewMode,
-}: ViewModeItemProps): JSX.Element => (
+}) => (
   <a
     href="#"
     className={clsx('dte-sub-nav__item', {
@@ -140,10 +140,10 @@ interface ViewModePickerProps {
   onChangeViewMode: (vm: ViewMode) => void;
 }
 
-const ViewModePicker = ({
+const ViewModePicker: React.FC<ViewModePickerProps> = ({
   viewMode,
   onChangeViewMode,
-}: ViewModePickerProps): JSX.Element => {
+}) => {
   return (
     <div className="dte-view-mode-selector">
       View
@@ -171,11 +171,11 @@ export interface TokenEditorProps {
   onChange?: (values: StyleDictValueMap) => void;
 }
 
-const TokenEditor = ({
+const TokenEditor: React.FC<TokenEditorProps> = ({
   tokens,
   initialValues = {},
   onChange,
-}: TokenEditorProps): JSX.Element => {
+}) => {
   const [state, dispatch] = useReducer(reducer, {
     ...initialState,
     values: fromStyleDictValues(initialValues),
@@ -189,7 +189,7 @@ const TokenEditor = ({
     onChange(styleDictValues);
   }, [state.values]);
 
-  let body: JSX.Element;
+  let body: React.ReactElement;
   switch (state.viewMode) {
     case 'tokens': {
       body = (

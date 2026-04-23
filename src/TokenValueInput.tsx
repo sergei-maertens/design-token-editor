@@ -8,14 +8,14 @@ interface TokenValueInputProps {
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const TokenValueInput = ({
+const TokenValueInput: React.FC<TokenValueInputProps> = ({
   name,
   type = 'text',
   defaultTokenValue = '',
   size = 8,
   onChange,
   ...props
-}: TokenValueInputProps): JSX.Element => {
+}) => {
   return (
     <input
       className="dte-token-value-input"

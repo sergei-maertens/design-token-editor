@@ -28,13 +28,13 @@ interface TokensTableRowsProps {
   onToggle: (scope: string[]) => void;
 }
 
-const TokensTableRows = ({
+const TokensTableRows: React.FC<TokensTableRowsProps> = ({
   container,
   parentScopes,
   limitTo = '',
   closedScopes = [],
   onToggle,
-}: TokensTableRowsProps): JSX.Element => {
+}) => {
   // split the items to render into two sets:
   // 1. design tokens (leaf nodes, having a value key)
   // 2. nested scopes/containers, having more nested scopes or leaf nodes
@@ -141,12 +141,12 @@ export interface TokensTableProps {
   filterEnabled?: boolean;
 }
 
-const TokensTable = ({
+const TokensTable: React.FC<TokensTableProps> = ({
   container,
   limitTo = '',
   autoExpand = false,
   filterEnabled = false,
-}: TokensTableProps): JSX.Element => {
+}) => {
   const namespaces = Object.keys(container).map(namespace => [namespace]);
   const [closedScopes, setClosedScopes] = useState(autoExpand ? [] : namespaces);
   const [state, dispatch] = useReducer(reducer, initialState);
